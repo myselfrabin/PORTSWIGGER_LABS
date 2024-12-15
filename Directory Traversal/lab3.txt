@@ -1,0 +1,17 @@
+Lab: File path traversal, traversal sequences stripped non-recursively.
+
+Target Goal: To solve the lab relative the content of 
+/etc/passwd.
+
+traversal sequences stripped non-recursively vanako
+nested traversal jastai ho like ....//....// euta euta
+thapne.
+
+Analysis: 
+1. First ma absolute path dera herchu k huncha like:
+/etc/passwd let's see it. yasle 400 bad request diyo.
+2.let's give ../../../etc/passwd this also don't work because the developer are saying if you see ../ don't allow this so how we can bypass this: we can bypass this by providing extra dot(..) and slashes(/) let's see:
+....//....//....//....//etc/passwd 
+
+3. Let's try nested wala hai ta: ....//....//....//....//etc/passwd yo pani vayana. 
+OK THIS WORKS HEHE congrulations to me.

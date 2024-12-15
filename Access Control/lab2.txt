@@ -1,0 +1,6 @@
+LAB 02: Unprotected admin functionality with unpredictable URL
+
+TARGET: This lab has Unprotected admin panel but the panel is somewhere located in the application. Access the admin panel and delete the user carlos.
+
+ANALYSIS: JUST DO THE VIEW PAGE SOURCE AND THEIR WILL BE HIDDEN ADMIN-PANEL THAT IS:
+/admin-orjmqm

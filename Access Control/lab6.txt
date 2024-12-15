@@ -1,0 +1,17 @@
+LAB 06: METHOD BASED ACCESS CONTROL CAN BE circumvented
+TARGET GOAL: Prompt user to become administrator
+
+GIVEN CREDS: for admin: administrator:admin
+             for wiener: winer:peter
+
+Steps to exploit: 1. I have a login feature as admin and wiener user
+                  2. I login to admin function and try to play with it
+                  3. I get a something intresting that's I can change the normal user as a admin the upgrade the user
+                  4.Since, wiener user is given to me I didnot do anything to it and try to upgrade the user carlos
+                  5. Now, I take all the request into the burp and try to play with it.
+                  6. Now, I saw that with admin session id it's not giving me to upgrade the user of wiener.
+                  7. so with change_admin_roles I try to upgrade the wiener roles by using the wiener session id. in change/admin_roles requests
+                  8. Now, this is what makes me change the winer to admin user.
+
+
+                  Now lets see it automation in the python

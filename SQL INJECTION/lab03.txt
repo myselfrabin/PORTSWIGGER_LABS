@@ -1,0 +1,46 @@
+LAB03: SQL injection UNION attack, determining the number of columns returned by the query
+
+End Goal: Determine the number of column return by the query
+
+Let's first have some UNION background.
+
+table1                    table2
+a | b(column)             c | d(column)
+--------------            --------------
+1, 2                      2, 3
+3, 4                      4, 5
+
+Query#1: SELECT a,b from table1
+  ==> 1,2
+      3,4
+
+Query#2: SELECT a,b FROM table1 UNION SELECT c,d FROM table2
+==>      1,2
+         3,4
+         2,3
+         4,5
+
+Rule while using the UNION operator in SQL:
+1. The number and the order of the column must be same in the all queries
+2. The datatype must be compataible
+
+
+SQLI attack(#way1):
+
+SELECT ? FROM table1 UNION SELECT NULL
+error--> Incorrect number of columns
+
+SELECT ? FROM table1 UNION SELECT NULL,NULL,NULL
+-200 response code--> correct number of columns
+
+SQLI attack(#way2):
+
+***USING THE ORDER BY CLAUSE as we know that ORDER BY 1 ==> will sort the column 1 ascending order
+*** Like that ORDER BY n ==> will sort the column n ascending order
+
+SELECT a,b FROM table1 ORDER BY 1
+--> successfully result came--> try incresing the interger
+SELECT a,b FROM table1 ORDER BY 3
+--> still successfully giving me a result --> try incresing the interger
+SELECT a,b FROM table1 ORDER BY 4
+--> If this gives an Internal Server error then we got know that information that is it has total number of columns of (4-1).

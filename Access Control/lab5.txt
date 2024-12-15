@@ -1,0 +1,10 @@
+Lab 05: URL-based access control can be circumvented
+TARGET GOAL: Access the admin panel and delete the user carlos
+INFORMATION: Backend application suppport X-Original-URL
+
+SO WHAT DOES X-Original-URL DOES?
+ans: It override the original-URL request.
+example:
+GET /login HTTP/1.1
+X-Original-URL:/admin
+this is override the /login and put /admin there.

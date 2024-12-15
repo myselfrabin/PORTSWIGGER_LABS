@@ -1,0 +1,15 @@
+Lab: File path traversal, simple case: 
+
+This lab contain the vulnerability in display of
+product images.
+
+Our Goal: To retrive the content of etc/passwd file.
+
+Analysis:  tyo image vako folder yasto form ma huna
+sakcha: var/www/images/65.jpg
+
+ava maila herne vanako etc/passwd file ho jun root directory
+ma xa, tesko lagi I will do::
+var/www/images/etc/passwd(actually this will not work because ma ajai root directory) ma gako xaina for that I will do: var/www/images/../../../etc/passwd
+Now, I am in the root directory, because with every ../ I am going 1 directory 
+back.

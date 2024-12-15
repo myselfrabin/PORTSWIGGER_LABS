@@ -1,0 +1,5 @@
+LAB 1: Reflected XSS into HTML with nothing Encoded
+
+TARGET GOAL: Finding XSS to call the alert function.
+
+ANALYSIS:

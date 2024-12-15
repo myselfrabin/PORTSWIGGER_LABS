@@ -1,0 +1,14 @@
+Lab 03: User role control by request parameter.
+Solve the lab by accessing the admin panel and using it to delete the user carlos.
+
+You can log in to your own account using the following credentials: wiener:peter
+
+
+Steps: 
+1. Found on cookie on burp that Admin=false I modify that and made
+   it true and send.
+2. The backend proceed me by giving the path as: /admin   
+3. Now, I try to login through GET request by: 
+   /admin?id=admin
+   and boom it's logged in.
+4. Now, I will delete the user carlos and solve the lab.

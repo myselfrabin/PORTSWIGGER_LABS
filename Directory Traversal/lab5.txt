@@ -1,0 +1,23 @@
+Lab: File path traversal, validation of start of path
+
+Target/Goal: retrieve the contents of the /etc/passwd file. 
+
+Idea: This lab contain the full file path via request parameter and supplied path starts with the expected folder. 
+
+url request of this lab:: GET /image?filename=/var/www/images/52.jpg HTTP/2
+
+paila vanda alik different xa purai file ko nam xa:
+/var/www/images/52.jpg
+
+Analysis:
+1. paila jastai absolute path dera try garam;  /etc/passwd
+ok yaslae vayana 400 bad request that is hamro kai error vayo.
+
+2. ava let's try by giving correct filename hai ta: 
+    /var/www/images/etc/passwd 
+    ok this also sends me a bad request
+
+ 3. ava ma /etc/passwd lai main root directory ma gayara execute garchu.
+  for that:  /var/www/images/../../../etc/passwd  
+
+  yoyo done congrulations to me.

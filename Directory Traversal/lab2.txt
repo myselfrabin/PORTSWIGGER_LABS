@@ -1,0 +1,22 @@
+Lab: File path traversal, traversal sequences blocked with absolute path bypass
+
+Target/Goal: retrive the content of etc/passwd file.
+Analysis: etc/passwd file bata content retrive garnu xa.
+
+First ma absolute path dera herchu ani vayana vani balla
+relative path dinchu.
+
+The url is like: GET /image?filename=55.jpg
+
+I will give: /image?filename=/etc/passwd let's see what happen.
+
+Ok it's working congrulations to me Hehe.
+
+Let's check relative path also:
+   I will give: ../../../etc/passwd ok relative path is not working here.
+   Why? relative path is not working look carefully the get request of both lab:
+
+Lab 01 get request: GET /image?filename=48.jpg HTTP/2
+Lab 02 get request: GET /image?filename=55.jpg HTTP/2
+
+There is nothing like that you have to check manually.
