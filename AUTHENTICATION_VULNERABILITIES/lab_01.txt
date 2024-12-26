@@ -1,0 +1,23 @@
+Lab info::
+Lab: Username enumeration via different responses
+
+VULNERABLE CATEGORY: This lab is vulnerable to username bruteforce enumeration and password bruteforce attack.
+
+End Goal: Get the correct username and password and login there.
+
+ANALYSIS:
+1. At first I try with:
+username==> admin
+password ==> admin 
+***I do capture this request in the burp and it does shows me invalid username.
+2. So, there is a point invalid username so I will enumerate the username of it, there is given list of username.
+3. I will send the request into the intruder and bruteforce for the username.
+4. Username=oracle ==> gives me responses different then other and it's also saying incorrect password, so it's proved that the username is correct and now I will bruteforce for the password.
+*** username=oracle password=***doing bruteforce
+5. password=password ==> this shows me 302 redirect so our password is password
+
+ Login crediantals: 
+ **username=oracle 
+ **password=password
+
+ Done solved the lab.
