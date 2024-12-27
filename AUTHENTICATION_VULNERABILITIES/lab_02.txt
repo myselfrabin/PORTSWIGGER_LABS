@@ -1,0 +1,21 @@
+LAB INFO: 
+Lab: 2FA simple bypass
+
+Vulnerable CATEGORY: On the 2Factor Authentication
+
+End Goal: Login as user carlos by bypassing the 2FA
+Given Credentials: 
+username:wiener
+password:peter
+Victim Credentials:
+username:wiener
+password:peter
+
+ANALYSIS: 
+1. At first I do login with the given crediantals username:wiener and password:peter
+2. There was a login request, and it's going to the /login2 GET endpoint
+3. And there is a view email in the side, I view that and got the code
+4. And then, it lets me to login the user carlos with the endpoint: /my-account?id=wiener
+5. now, I tried to login with the victim crediantals, username: wiener and password
+6. Now, I forward to request /login endpoint
+7. And the when the /login2 request came then, I drop it and the put the endpoint: /my-account ==> it let's me login there.
