@@ -10,7 +10,7 @@ def login_as_carlos(s,url):
     login_data={"username":"carlos","password":"monotya"}
     #now we just perform the POST request
     r=s.post(endpoint,data=login_data,proxies=proxies,verify=False,allow_redirects=False)
-    #confirm the vbypass now
+    #confirm the bypass now
     bypass_login=url + "my-account"
     #make a get request
     r=s.get(bypass_login,proxies=proxies,verify=False)
