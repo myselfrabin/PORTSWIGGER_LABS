@@ -40,3 +40,4 @@
 - **Authorization** limits the scope of what authenticated users can do, adding layers of security.
 
 Understanding and correctly implementing both ensures robust system security and protects sensitive data.
+
