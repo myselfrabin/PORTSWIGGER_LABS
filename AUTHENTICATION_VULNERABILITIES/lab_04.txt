@@ -1,0 +1,28 @@
+LAB INFO: Username enumeration via subtly different responses
+
+Known things: This lab is subtly vulnerable to username enumeration
+
+End Goal: 
+1. Enumerate the valid username
+2. Brute-force the username password, and then access their account page.
+
+ANALYSIS: 
+1. Access the lab and go to my account
+2. Try to login with random username and password, say: 
+Username=test
+Password=test
+3. Send this requests to burp, from their send to Repeter and Intruder.
+4. Brute-force from the given list of username to username.
+5. Every request stauts code and length seems like same it's difficult to get which is the valid username, until I have a look on the fullstop.
+*** In Invalid username: Invalid username or password. (notice fullstop at last)
+*** In valid username: Invalid username or password (No fullstop here)
+so, username= acceso
+Now, turn of bruteforcing password
+6. Send the same request with username acceso to intruder and bruteforce the password.
+7. Got 302-redirect on password=159753
+so our usrname and password is: 
+usrname=acceso
+password=159753
+Successfully we done the lab yahoooooooooooooooooo
+
+We can bruteforce this by using tool like hydra as well.
