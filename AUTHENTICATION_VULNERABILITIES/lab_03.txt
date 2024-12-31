@@ -1,0 +1,14 @@
+LAB INFO: Password reset broken logic
+
+*** Your crediantals: wiener:peter
+*** Victim username: carlos
+
+How to exploit: 
+1. Login to my Credentials that is: winener:peter
+2. And then, logout and again try to login but don't provide password.
+3. Instead do forget password
+4. And give wiener's username or email 
+5. And then go to the email client
+6. Go to the link that is given in the email
+7. there shoule be /forget-password?temp similar request like this:
+*** make change to the session and username=carlos and password and then the lab complete.
