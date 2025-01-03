@@ -1,0 +1,30 @@
+LAB INFO: 
+Username enumeration via response timing
+
+MORE INFO: This lab is vulnerable to username enumeration using its response times. To solve the lab, enumerate a valid username, brute-force this user's password, then access their account page.
+
+KNOW THINGS: 
+*** MY-CREDIENTALS: username: wiener
+                    password: peter
+
+ANALYSIS: 
+1. Log in by given username and password we get the response-time as: 40,112 milisec
+2. Let's try by giving only valid username: wiener how much millisec it will take:? 
+  *** username: wiener // valid username
+  *** password= 1 //Invalid Password
+  *** The valid username and Invalid password is taking: response-time: 226 milisec
+  21st: *** username= peter // invalid username
+        *** password= 1 // invalid password
+        *** response-time: 203 millisec
+3. Now, bruteforce other valid username send the request into intruder and bruteforce the username.
+4. Go to the columns and select the response sent and response receive
+5. Now, we get username: 
+   username: announcements
+6. Now, we are bruteforcing for the password: 
+7. While bruteforcing and I got a 302 status code: 
+*** so the username and the password is: 
+    ***username: announcements
+    *** password: buster
+    Let's try to login with this CREDIENTALS.
+Done we finally solved the lab.
+
