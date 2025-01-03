@@ -41,3 +41,19 @@
 
 Understanding and correctly implementing both ensures robust system security and protects sensitive data.
 
+## HOW IT ARISES
+  Most vulnerability in authentication mechanism occur in two of ways.
+  - The authentication mechanism are of weak because they failed to protect agains bruteforce attack.
+  - By logic flaw or poor coding mistake by the developer.
+
+## What is the impact of vulnerable authentication?
+- Lots of impact xa hai ta heram aba.
+- Kunai euta attacker lay broken authentication bata aru kasaiko account ma login garna sakcha by doing bruteforcing, the attacker has access to all the data of comramized account.
+- Also by accessing control of low-priveledge account kai sansitive na vaye pani some hidden page will be there, attacker can have those hidden page.
+
+## Usernaemane enumeration
+While doing the username enumeration we should have a closed look at this things.
+- Status code: Suppose while trying everusername it's giving me 200 code but for the one username it's giving me another status code that means the username we guess might be correct. It is best practice for websites to always return the same status code regardless of the outcome, but this practice is not always followed.
+- Error message: Look closly in the error message there you can get a hint, small typing mistake by developer can lead us into the account takeover.
+- Response times: Let's suppose many wrong username and password where handing with the same response time but one username and password handling with the different response time then we should get the hint from there as well. For example: A website only check for the password filed if the username is valid, this extra step may increase in the response time. This may subtle but as a hacker we can put the more long password to delay the response time more.
+
