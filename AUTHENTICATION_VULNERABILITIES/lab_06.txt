@@ -1,0 +1,19 @@
+LAB INFO: Broken brute-force protection, IP block
+This lab is vulnerable due to a logic flaw in its password brute-force protection. To solve the lab, brute-force the victim's password, then log in and access their account page.
+
+MY CREDIENTALS: 
+username: wiener
+password: peter
+
+VICTIM CREDIENTALS: 
+username: carlos
+password: ??????
+
+
+ANALYSIS: 
+1. It does gives me timeout after the 3 wrong attempt.
+2. So, I will do 2 wrong login(try to bruteforce into that ) and in third one I will give the correct username and password  so that, it would not give me the timeout again for two other login attempt.
+3. By using the python script I got the username and password to bruteforce
+4. Got 302 response on username: carlos password: 5555555
+
+So, solved the lab.
