@@ -1,0 +1,18 @@
+LAB INFO: 
+ Username enumeration via account lock
+
+ TO DO: 
+ 1. Enumerate the correct Username
+ 2. And bruteforce for the password. 
+
+ Things I do here: 
+ 1. First I try with random Username and password it's not giving me account like with 10+ request as well
+ 2. So, I am guessing it will give the account lock with the correct Username
+ *** That is the reason I am doing bruteforce...each Username 5 times so may be it will lock-out my account
+ *** And it does behaves similary, it lock-out to the Username: puppet
+ so the correct Username is: puppet 
+ 3. Now, I will be bruteforcing for the password: 
+ *** And while bruteforcing the password I found one unique request that is giving different length and nothing verbose output, so I tried to login and it let me in.
+ *** so***
+ Username: puppet
+ password: andrew
