@@ -1,0 +1,17 @@
+LAB INFO: 2FA broken logic
+MORE INFO: This lab two factor authentication is vulnerable to solve the lab, access Carlos account page.
+
+Given access: 
+username: wiener
+password: petetr
+
+Victim access: 
+username: carlos
+
+ANALYSIS: 
+1. I try to login with the given access and login got their 2fa code
+2. And on that request, what website is vulnerable is: it doesnot checking the session for the user when I delete the session and remove wiener name and add carlos name it's still taking me to the login page but the problem is: it's giving me Invalid security code so, I need to bruteforce for the 2fa code.
+
+
+
+This takes so much time to bruteforce so, I am doing it later on.

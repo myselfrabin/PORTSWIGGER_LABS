@@ -76,4 +76,20 @@ In this case, merely including your own login credentials at regular intervals t
 |-------------------------------|-------------------------------------------|  
 | Imagine you have a toy box with a lock. If you try the wrong key too many times, you can't open it for a while. But if you use the right key in between, the box forgets how many wrong keys you tried. | Brute-force protection often involves blocking IPs after several failed login attempts. However, if successful logins reset the failed attempt counter, attackers can bypass the block by logging into their own account periodically. |  
 | So, if a naughty kid tries to open the box with wrong keys, they can stop the box from locking by using the correct key sometimes. | Attackers can automate login attempts with their credentials interspersed in the attack payload, preventing the system from triggering IP bans. This logic flaw weakens the defense mechanism. |  
-| The box keeps counting from zero again, making it easy to keep trying! | This flaw essentially nullifies rate-limiting defenses by exploiting the reset logic in brute-force protection mechanisms. |  
+| The box keeps counting from zero again, making it easy to keep trying! | This flaw essentially nullifies rate-limiting defenses by exploiting the reset logic in brute-force protection mechanisms. |
+
+# USER RATE LIMITING: 
+1. Another way a website try to prevent the bruteforce attack is by implementing the user-rate limiting.
+2. In this case logging too many login request within the short period of time cause IP address to be blocked.
+- The IP can be only unblocked in one of the following ways: 
+   1. Automatically after a certain period of time
+   2. Manually by admin
+   3. Manually by the user after completing the CAPTCHA. 
+
+# NOTE: 
+- As the limit is based on the rate of HTTP requests sent from the user's IP address, it is sometimes also possible to bypass this defense if you can work out how to guess multiple passwords with a single request.
+
+# HTTP basic authentication: 
+1. In HTTP basic authentication the client receives the Authentication token from the server, which is made by concatenating the **username** and __password__ and encoding it in **Base64**.
+2. The authentication token is stored and managed by the browser, which automically adds in to **Authorization** header of every request.
+     1. **Authorization: Basic base64(username:password)**
