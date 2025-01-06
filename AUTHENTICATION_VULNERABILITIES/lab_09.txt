@@ -1,0 +1,29 @@
+LAB INFO: Brute-forcing a stay-logged-in cookie
+This lab allow user to stay login even after closing the browser session.
+
+VULNERABLE ENDPOINT: Cookie 
+
+Given credentials: 
+*** username: wiener
+*** password: peter
+
+Victim credentials: 
+*** username: carlos
+
+
+ANALYSIS:
+
+
+1. *** wiener: 51dc30ddc473d43a6011e9ebba6ca770 ==> this is in a format of: base64(username:((md5(password))))
+2. SO, I have to do for the username carlos: so, I need to do like: 
+  ** carlos: password_is_here
+  *** I need a base64 of this
+  *** so, md5(password)
+3. Bruteforcing this will give me the password.
+4. I have to add in payload processing too. 
+ 4.1 md5 type
+ 4.2 Adding prefix: carlos: (This is saying that it will try for every username carlos)
+ 4.3 base64- encode after that  
+This does gives me: 
+*** stay-logged-in=Y2FybG9zOmM4ODM3YjIzZmY4YWFhOGEyZGRlOTE1NDczY2UwOTkx
+*** so decoding this, we get: username: carlos password: 123321
