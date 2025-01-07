@@ -1,0 +1,33 @@
+LAB INFO: Offline password cracking
+MORE INFO: This lab stores the user's password hash in a cookie. The lab also contains an XSS vulnerability in the comment functionality. To solve the lab, obtain Carlos's stay-logged-in cookie and use it to crack his password. Then, log in as carlos and delete his account from the "My account" page
+
+GIVEN CREDENTIALS: 
+wiener:peter 
+VICTIM CREDENTIALS: 
+carlos (username only)
+
+ANALYSIS: 
+1. There is a login page, it takes the username password an one remember me functionality.
+ 1.1 It goes throught the post request to the login page, with stay-logged-in: on
+
+2. The next request is on the, / my-account?id=wiener(username) page, it is a GET request.
+2.1 Ther is a cookie as:   Cookie: stay-logged-in=d2llbmVyOjUxZGMzMGRkYzQ3M2Q0M2E2MDExZTllYmJhNmNhNzcw; and session as: session=session=JpN0V6rwheMLlwVO5wDnIrNlRYqVh0SR 
+2.2 Let's try with removing session it will let me logged in or not==> It;s letting me logged in without session as well
+2.3 First bug==> Letting user logged in without using the session as well.
+
+3. The cookie seeems encrypeted let's check it. 
+3.1 echo "encrypeted_cookie" | base64 -d (if it's base64)
+3.2 d2llbmVyOjUxZGMzMGRkYzQ3M2Q0M2E2MDExZTllYmJhNmNhNzcw ==> wiener:51dc30ddc473d43a6011e9ebba6ca770
+3.3 It's confirm that it's encrypeted to base64 
+3.4 51dc30ddc473d43a6011e9ebba6ca770 ==> peter (this password is belong to md5 hashed password)
+3.5 Now, the overall structure is like: 
+   base64(username:md5(password)) ==> THis is the format website is doing
+
+4. Let's bruteforce it.
+
+STEPS TO DO THE LAB: 
+1. Make a list of password in separate file
+2. try to bruteforce the password with /my-account?id=carlos request
+3. Once got the password delete the carlos account with /my-account/delete request
+
+let's script it
