@@ -1,0 +1,30 @@
+
+LAB INFO: Password reset poisoning via middleware
+
+MORE INFO: 
+1. This lab is vulnerable to password reset poisoning.
+2. The user carlos will randomly click on this email without checking anything.
+3. To solve the lab, login into the carlos account.
+
+GIVEN CREDENTIALS: 
+username:password==> wiener:peter
+
+VICTIM CREDENTIALS:
+username: carlos, password=?????
+
+ANALYSIS: 
+1. Let's analyze how the forget password mechanism is woking.
+2. There is 3 main request for the changing password of a user, the requests are: 
+  2.1 /forgot-password request without even checking the session==> forget password handa suru ma yo request ma pugyo
+  2.2 /forgot-password request with having username=username   ==> This request actually sends the email hai 
+  2.3  /forgot-password?temp-forgot-password-token=someToken   ==> we found this token from the gmail
+
+3. Let's try X-Forwarded-Host on 2.2 with username wiener it it accepts or not ==> yes it does gives me 200 res
+   3.1 Let's check email client if the email has come from the same, X-Forwarded-Host or not??? ==> yes comes
+   3.2 I got the token from the log and using that token
+4. Now, going into the 2.3 request and put the new token and new password and then login with the carlos user==> Then, I am in.
+
+Finally the lab has been solved✅
+
+
+

@@ -25,9 +25,16 @@ ANALYSIS:
 
 4. Let's bruteforce it.
 
+
+THINGS I NEED TO DO TO SOLVE THIS LAB: 
+1. At first login and view the cookie of wiener.
+2. We have the clear crystal cookie: base64(username:md5(password))
+
 STEPS TO DO THE LAB: 
 1. Make a list of password in separate file
 2. try to bruteforce the password with /my-account?id=carlos request
 3. Once got the password delete the carlos account with /my-account/delete request
+4. Now in the website of view post there is an comment field, I do comment there and get an XSS
+5. 
 
 let's script it
