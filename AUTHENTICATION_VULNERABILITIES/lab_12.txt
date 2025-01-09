@@ -1,0 +1,40 @@
+LAB INFO: PASSWORD BRUTEFORCE VIA PASSWORD CHANGE
+
+VULNERABLE PARAMETER: Password change functionality
+
+GIVEN CREDENTIALS: 
+username:password===> wiener:peter
+
+VICTIM CREDENTIALS: 
+username=carlos , password=?????
+
+
+ANALYSIS: 
+1. Let's try to change the password of wiener let's see how this works hai.
+2. It's asking me for: 
+ 2.1 Current password: let's give correct one
+ 2.2 New password: some new pass
+ 2.3 Confirm new password: let's give correct new pass
+ *** I have change password to 123
+
+3. Let's try to change the password with wrong current password:
+ 3.1 current pass: 
+ 3.2 new pass:
+ 3.3 confirm new pass:
+ *** It says nothing directly redirect me into the login page and that time even If I try to login with corrct username and password it will give me the timeout for 1 min.
+ **** It does lock my account for 1 min.
+
+4. Now, let's try with correct current password and one of the incorrect new password
+ 4.1 current pass: 
+ 4.2 new pass: 
+ 4.3 confirm new pass:
+ **** THis actually gives me the new password do not match, this can be a hint.
+ *** This means we have given correct old password but our new password didnot match
+
+5. Now, with all this info let's BRUTEFORCE
+ 5.1 Here we found the passwod i.e {mobilemail} which is in different responses from other, 
+ 5.2 Let's try to login:
+  *** username: carlos
+  *** password: mobilemail
+
+  DONE:  solved✅ 
