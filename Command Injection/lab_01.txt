@@ -1,0 +1,19 @@
+LAB INFO: OS command injection, simple case
+ This lab contains an OS command injection vulnerability in the product stock checker.
+
+The application executes a shell command containing user-supplied product and store IDs, and returns the raw output from the command in its response.
+
+To solve the lab, execute the whoami command to determine the name of the current user. 
+
+TARGET GOAL: We have to find the OS comamnd injection in the product category
+
+ANALYSIS: 
+1. Open the burp
+2. ANALYSIS the request
+3. Find the product category
+4. You will find there two variables i.e productID and the storeId
+5. You can use the productId to inject command like: 
+productId=1 &whoami &storeId=1 (url encode it)
+and to remove error unbounded varibel we can use # to comment out extra things
+i.e 
+productID=1 &whoami# &storeId=1
