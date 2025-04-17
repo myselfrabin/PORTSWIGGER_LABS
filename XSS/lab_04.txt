@@ -1,0 +1,20 @@
+LAB INFO: DOM XSS in innerHTML sink using source location.search
+
+MORE INFO:  This lab contains a DOM-based cross-site scripting vulnerability in the search blog functionality. It uses an innerHTML assignment, which changes the HTML contents of a div element, using data from location.search.
+
+To solve this lab, perform a cross-site scripting attack that calls the alert function
+
+ANALYSIS:
+1. Search some random string in the search field.
+2. Notice that it get reflected in the dom element such as <span>
+    2.1 <span id="searchMessage">123456</span>
+3. Now we will see the page source how js file has handled this: 
+   3.1 
+
+4. Now we can use malicious xss payload to call the alert fn i.e
+    4.1 <img src=1 onerror=alert(1)> 
+    4.2 Explain of that payload: simply put the <img> element and then src=anything and if the src didnot find anything then it will call the oneror event handling and alert the popup.      
+
+5. Look at the point 2.1 and imagine it like:     
+    5.1 <span id="searchMessage"><img src=1 onerror=alert(1)></span>
+    5.2 This is what happen there and it trigger the alert popup.
