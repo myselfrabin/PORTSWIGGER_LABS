@@ -1,0 +1,14 @@
+LAB INFO: Reflected XSS into HTML context with nothing encoded
+
+MORE INFO:   This lab contains a simple reflected cross-site scripting vulnerability in the search functionality.
+
+To solve the lab, perform a cross-site scripting attack that calls the alert function. 
+
+
+ANALYSIS:
+1. I get the search field in the website, so feel like I need to check the xss there
+2. So, I check for the payload first i.e <u>hello</u> and it's giving me result as underlined hello
+3. And then, I tried for the potential xss bug i.e <script>alert("hacked by rakshak")</script> and it does shows the popup
+4. So, I can say that this is a reflected xss bug
+
+NOW SCRIPTING IN PYTHON
