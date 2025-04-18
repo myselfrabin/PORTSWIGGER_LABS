@@ -1,0 +1,38 @@
+LAB INFO: DOM XSS in jQuery anchor href attribute sink using location.search source
+
+GOAL: Find a way to popup the xss 
+
+ANALYSIS:
+1. Going to the lab we see that there is an submit feedback thing
+2. We do submit the feedback and trying to see that thing in web developer tool and we didnot see any thing there
+3. But I can see an intresting .js code there i.e 
+   3.1  $('#backLink').attr("href", (new URLSearchParams(window.location.search)).get('returnPath'));
+   3.2 This code is saying something like: "Hey there is a id called backLink from where you will go 1 step back after submitting the form"
+   3.3 window.location.search ==> Get the query string from the current page URL, Example: If the url is: https://www.example.com/page?returnPath=/dashboard  ==> Then the window.loacation.search will return the returnPath=?/dashboard
+4. new URLSearchParams ==> 
+     4.1 Create an object to easily extract a query parameter
+     4.2 It's like a helper tool it says, "Hey, just tell me the key you want, and I'll give you its value."
+5. .get('returnPath') ==> 
+    5.1 This ask from the URL give me the value of returnPath query parameter.
+    5.2 Example: /dashboard
+
+6.  $('#backLink').attr("href"...................
+    6.1 Uses jQuery to find the element with id backLink
+    6.2 Then sets its href attribute (like the href in <a href="...">) to the value we just got from the URL.
+
+7. Now let's see the how returnPath is behaving in the code
+   7.1 <a href="/feedback?returnPath=/feedback">Submit feedback</a><p>|</p> ==> It's setting up like This
+   7.2 Here a user can submit there feedback it's like malicious if a usr can execute their malicious xss payload here
+   7.3 And when we click the back button the xss should be trigger as per the code.
+
+8. So, our URL looks like this:
+  8.1 https://0a2900a10376399b80b00331006a0081.web-security-academy.net/feedback?returnPath=/
+  8.2 I can enter the malicious xss payload in the returnPath field
+  8.3 Our payload would be:
+    8.3.1 javascript:alert("Hacked by rakshak07")
+    8.3.2 So, our final URL would be: https://0a2900a10376399b80b00331006a0081.web-security-academy.net/feedback?returnPath=javascript:alert("Hacked by rakshak07") 
+
+9. And like this we did finally solve our lab.
+                                
+                
+                         
