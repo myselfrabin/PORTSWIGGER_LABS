@@ -1,0 +1,27 @@
+LAB INFO:  Stored XSS into anchor href attribute with double quotes HTML-encoded
+
+MORE INFO OF THIS LAB: This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the comment author name is clicked. 
+
+GOAL OF THIS LAB: Get the alert popup and to prove that there is xss.
+
+ANALYSIS:
+1. We open the lab and map the application and we found a field to post a comment there were:
+   1.1 comment field
+   1.2 name field
+   1.3 email
+   1.4 website field
+2. Now as first we are doing normal comment like:
+   2.1 this is comment <>
+   2.2 hello<>
+   2.3 hello@gmail.co<m
+   2.4 https://www.google.com<> 
+3. And we view all this hai in the burp
+   3.1 And we notice there that every field does sanitize < = &lt; and > = &gt; but the website field doesnot sanitize the input 
+   3.2 It shows like the:
+        3.2.1 href="<script>alert(1)</script>">iamehere
+              href="javascript:alert(1)">iamehere ==> This works
+             href="<img src=1 onerror=alert(1)>">iamehere ==> This will not work because <img> is treated string inside the attribute if you want to popup this then go outside of the attribute and try it.
+             href=""><img src=1 onerror=alert(1)>">iamehere
+            "><img src=1 onerror=alert(1)> ==> this is the payload does not work because it does sanitize the double quote as &quote;
+
+4. Hence successfully we solve the lab.            
