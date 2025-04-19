@@ -1,0 +1,24 @@
+1. First map the every application do wild recon (find every user input field)
+2. And then search for a specific string like "123456" if it's reflected back then check on web dev tools where it's reflected
+3. If it's on the tag like: <input value="123456"> ==> Then try to get out of that <input> tag by ">123456
+4. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+n. Some other time: DOM REFLECTED
+1. Give the string to the search field
+2. Look where does it reflected in the web dev tools
+3. If it's shown only on the <h1><p> tag then it's not DOM based we kinda leave it and check for the js links for more info.
+4. Look any javascript code link there check that js file and try to understand that code how we can execute the xss
+5. Read the js code and according to that try to exploit it

