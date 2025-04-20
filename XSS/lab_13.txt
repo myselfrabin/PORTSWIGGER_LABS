@@ -1,0 +1,32 @@
+LAB INFO: Stored DOM XSS
+
+MORE INFO:  This lab demonstrates a stored DOM vulnerability in the blog comment functionality. To solve this lab, exploit this vulnerability to call the alert() function.
+
+
+ANALYSIS:
+1. Since, it's based on stored xss there were a comment field where we can give a Input
+2. Let's see they were reflected or not.
+3. Yes, they were reflected but not directly but in the /post?postId=num on this request.
+4. And while inspecting it into the web-dev tools I can see one js code is being called i.e <script src="/resources/js/loadCommentsWithVulnerableEscapeHtml.js"></script>
+5. Let's go and view this code and analyze it: 
+   5.1 While analyzing the code I can see an intresting point i.e 
+   function escapeHTML(html) {
+        return html.replace('<', '&lt;').replace('>', '&gt;');
+    }
+    5.2 Basically what it's doing is: It's changing the our input character such as: <> into &lt; and &gt;
+    5.3 Let's see in the whole code where where this fn is being called.
+        5.3.1  avatarImgElement.setAttribute("src", comment.avatar ? escapeHTML(comment.avatar) : "/resources/images/avatarDefault.svg");
+        5.3.2   let newInnerHtml = firstPElement.innerHTML + escapeHTML(comment.author)
+        5.3.3  commentBodyPElement.innerHTML = escapeHTML(comment.body);
+        5.3.4  So let's try by giving double <><> what will happen if I will give single <> it will definitely change into &lt; and &gt;
+6. While giving the two <><> this both are shown same in the webpage as reflected but in the blog page
+   6.1 And while inspecting that we found that it's made like this: <p>&lt;&gt;&lt;&gt;</p> ==> Not good sign for user
+   6.2 Let's check by injecting a tag after the: <><u> 
+       6.2.1 Intresting now it's showing only <> in the blog field as reflected let's inspect it now
+       6.2.2 While inspecting we found that: <p>&lt;&gt;<u></u></p> this confirms after first checking <> it's not checking other tag
+7. Now we can inject our xss payload i.e 
+   7.2 <><img src=1 onerror=alert(1)> ==> This would be show like: <p>&lt;&gt;<img src=1 onerror=alert(1)></p
+
+
+AND FINALLY WE SOLVE THE LAB.
+HENCE WE DID IT KEEP HACKING EVERYDAY RABIN.

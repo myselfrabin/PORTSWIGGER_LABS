@@ -1,0 +1,28 @@
+LAB INFO:  Reflected XSS into HTML context with most tags and attributes blocked
+
+MORE INFO:  This lab contains a reflected XSS vulnerability in the search functionality but uses a web application firewall (WAF) to protect against common XSS vectors.
+
+To solve the lab, perform a cross-site scripting attack that bypasses the WAF and calls the print() function.
+
+ANLAYSIS:
+1. I do open the page and there was a search field and I search for the random string such as "123456" and it's reflected back to the website.
+2. And I did try the <script>alert(1)</script> ==> And it's saying that the cannot allow this tag
+    2.1 And again I have tried a different tags and it does says me a same
+3. So, I decided to go through the every tag obviously going to the every tag will take time so I opened up the xss cheatsheet from the portswigger and copy all the tags
+4. I send the request to the burp intruder and bruteforce the tag, with the position of payload:
+    4.1 <$script$> and tried every tag here from the cheatsheet
+    4.2 So, every other tag was giving me a 400 error but two tag are giving me a 200 OK
+         4.2.1 Those two tag are: <body> and <custom> 
+5. Now to triggered the XSS I have to find the event as well, 
+   5.1 So I decided to bruteforce the event again, i.e <body $event$=1>
+   5.2 Bruteforcing the every event from the xss cheatsheet and some give me 200OK 
+       5.2.1 The event onresize give me an 200OK like this: <body onresize=1> ==> This gives 200 and shows only " while reflecting
+6. So I take the payload combining this two as: 
+   6.1 <body onresize=print()> ==> This payload gives me an alert print popup when resizing the page.
+   6.2 But this doesnot just solve the lab because if user will not resize the webpage then it will not give print() alert.
+7. So now let me check with the <iframe> it will accept or not: 
+    7.1 <iframe src="website_link_with_payload_here" onload=this.style.width='100px'></iframe> ==> Width deko page resize hos ani afai print() fn ko popup aaus vanara ho user afai lay resize garnu parana 
+
+
+   HENCE WE SOLVE THE LAB.
+   HAPPY HACKING RABIN.
