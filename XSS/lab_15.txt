@@ -1,0 +1,30 @@
+LAB INFO: Reflected XSS into HTML context with all tags blocked except custom ones
+
+MORE INFO:  This lab blocks all HTML tags except custom ones.
+
+To solve the lab, perform a cross-site scripting attack that injects a custom tag and automatically alerts document.cookie. 
+
+
+
+ANLAYSIS:
+1. Open the website and you will see the search bar there: over there search a random string first like: "123456"
+2. As we can see it's being reflected so we can surely check for the reflected XSS.
+3. Let's try with the simple payload i.e <script>alert(1)</script> and it does says: Tag is not allowed(Intresting so other tags may be allowed)
+4. So let's try with more tag we know, every tag is saying the same i.e Tag is not allowed
+5. Let's send that request to the intruder and bruteforce the all other tag to see if any tag will be allowed
+     5.1 We go into the XSS cheatsheet of a portswigger lab and see the others tag
+     5.2 And we found <custom tags> are being accepted.
+     5.3 Now we have to find the event for that tag too hai: 
+         5.3.1 We will give a request like: <custom tags event=1> and bruteforce the event field (Ofcouse we have to URL encode it hai)
+6. We got 200OK with many events but we will take onresize event
+   6.1 Now we have to generate a payload based on it hai
+   6.2 We got a onfocus and autofocus payload hai: <xss onfocus=alert(1) autofocus tabindex=1>
+   6.3 Let's try this payload ==> Yes it shows me a popup successfully we found a xss but it's not solve yet
+   6.4 Becasue we have to send it to the user browser hai
+
+7. Let's try sending this payload with <iframe> to the user 
+   7.1 First let's check if <iframe></iframe> will support or not ==> <iframe> is not support in this lab maybe some WAF blocked it
+   7.2 Now we can do via: <script> location="linke_you_want_to_give_to_user"</script> 
+   7.3 <script>location='https://0a9e003b033b670480296cd600ac00fd.web-security-academy.net/?search=%3Cxss+onfocus%3Dalert%281%29+autofocus+tabindex%3D1%3E'</script> ==> This is how our payload would look like ==> This will not solve your lab you have to get the cookies so user document.cookie in place of 1.
+8. Finally sending that payload to the victim and we solved the lab
+

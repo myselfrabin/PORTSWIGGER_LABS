@@ -1,0 +1,23 @@
+LAB INFO: Reflected XSS with some SVG markup allowed
+
+
+MORE INFO:  This lab has a simple reflected XSS vulnerability. The site is blocking common tags but misses some SVG tags and events.
+
+To solve the lab, perform a cross-site scripting attack that calls the alert() function
+
+
+
+ANALYSIS:
+1. We open the website and see that there is an input field which accept the user input.
+2. And after that I simply put the string "123456" into the input field.
+3. And it was reflected and I tried with some of our custom payload i.e <script>alert(1)</script> ===> But it shown this tag was blocked.
+4. So I decided to bruteforce this field I choose the tags from xss cheatsheet of portswigger
+5. I bruteforce it using the intruder and finds it that <image> <animatetransform> and <svg> this tags were allowed there
+6. So, I go to the portswigger xss cheatsheet again and found three payload on <animatetransform> relateed with <svg>
+    6.1  <svg><animatetransform onbegin=alert(1) attributeName=transform>  ==> It fires when svg animation begins 
+    6.2  <svg><animatetransform onend=alert(1) attributeName=transform dur=1s> ==> Fires when svg animation ends
+    6.3  <svg><animatetransform onrepeat=alert(1) attributeName=transform repeatCount=2 dur=1s> ==> Fires when svg animation repeates ==>BUt this evenet was not allowed
+
+
+
+THIS IS HOW WE SOLVED THE LAB.
