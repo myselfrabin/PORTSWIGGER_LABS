@@ -1,0 +1,24 @@
+LAB INFO:  Reflected XSS in canonical link tag
+
+
+MORE INFO:  This lab reflects user input in a canonical link tag and escapes angle brackets.
+
+To solve the lab, perform a cross-site scripting attack on the home page that injects an attribute that calls the alert function.
+
+To assist with your exploit, you can assume that the simulated user will press the following key combinations:
+
+    ALT+SHIFT+X
+    CTRL+ALT+X
+    Alt+X
+
+Please note that the intended solution to this lab is only possible in Chrome.
+
+
+ANLAYSIS:
+Lab #20 - Reflected XSS in canonical link tag
+
+Target Goal - Perform an XSS attack  on the homepage that injects an attribute that calls the alert function.
+
+Analysis:
+
+<link rel="canonical" href='https://0a4c00fe0454d3bdc0c59a4a007a0072.web-security-academy.net/?randome=test'%09onclick='alert(1)'%09accesskey='x'/>
