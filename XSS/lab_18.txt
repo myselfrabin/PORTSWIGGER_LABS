@@ -1,0 +1,15 @@
+LAB INFO: Reflected XSS into a JavaScript string with single quote and backslash escaped
+
+
+MORE INFO:  This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality. The reflection occurs inside a JavaScript string with single quotes and backslashes escaped.
+
+To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function. 
+
+
+ANALYSIS:
+1. We search some input string in the search box
+2. And then find it's like: search='123456' ==> inside the script tag, this means we have to now get out of the that string and popup our XSS
+3. At first I tried: '123456 payload: this gives me result: search='\'123456' ==> A backslash has been added
+4. So I did, '\123456 payload: this gives me result: search='\'\\123456' ==> this does close on string and successfully got out of it
+5. Now we will close our script tag and open it and popup the alert box
+6. </script><script>alert(1)</script>// ==> This does gives me the XSS popup
