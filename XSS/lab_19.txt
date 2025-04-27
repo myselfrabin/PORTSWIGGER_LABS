@@ -1,0 +1,16 @@
+LAB INFO: Lab: Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escaped
+
+MORE LAB INFO: This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets and double are HTML encoded and single quotes are escaped.
+
+To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function. 
+
+
+ANALYSIS:
+1. I put the input 123456 into the search box and it's showing:var searchTerms = '123456'; as normal inside the strings.
+2. Now, let's put '123456 ==> this will gives me: searchTerms = '\'123456'; ==> Added backslash
+3. Let's give: '\123456 ==>  searchTerms = '\'\123456'; ==> this is like we have close one string and try to moving on the further
+4. '\</script> ==> let's see how it reacts. ==> searchTerms = '\'\&lt;/script&gt;'; ==> this shows <> are html encoded.
+5. So, we have to think of alternative hai 
+6. what If in my thinking this would be triggered like:
+   6.1 '\';(add semicolon) alert(1)//(comment out) ==> '\';alert(1)//
+7. Yes this does triggered finally we solve the lab

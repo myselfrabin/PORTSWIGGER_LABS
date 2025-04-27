@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stored XSS in onclick Event - Methodology</title>
+</head>
+<body>
+    <h1>Stored XSS in <code>onclick</code> Event - Methodology</h1>
+
+    <h2>Lab Situation:</h2>
+    <ul>
+        <li><strong>Context:</strong> Stored XSS vulnerability inside an <code>onclick</code> JavaScript event.</li>
+        <li><strong>Filters:</strong>
+            <ul>
+                <li><strong>Angle brackets (<code>&lt;</code>, <code>&gt;</code>) and double quotes (<code>"</code>) are HTML-encoded.</strong></li>
+                <li><strong>Single quotes (<code>'</code>) and backslashes (<code>\</code>) are escaped.</strong></li>
+            </ul>
+        </li>
+        <li><strong>Task:</strong> Inject a payload that triggers <code>alert(1)</code> when the comment author's name is clicked.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Analysis Methodology</h2>
+
+    <h3>1. Identify where your input lands</h3>
+    <p>Post a comment and inspect the HTML and JavaScript generated. Find where your comment or author name is injected.</p>
+    <p><strong>In this case:</strong></p>
+    <pre><code>onclick="var tracker={track(){}};tracker.track('https://www.google.com');"</code></pre>
+
+    <h3>2. Understand the JavaScript Context</h3>
+    <p>Injection point is <strong>inside single quotes</strong> (<code>'...'</code>) of a JavaScript function parameter.</p>
+    <p>Meaning your payload is inserted <strong>inside</strong>:</p>
+    <pre><code>tracker.track('YOUR_INPUT_HERE');</code></pre>
+
+    <h3>3. Understand the Escaping/Encoding Behavior</h3>
+    <ul>
+        <li>Single quotes <code>'</code> are escaped: <code>\'</code></li>
+        <li>Backslashes <code>\</code> are escaped.</li>
+        <li>Angle brackets <code>&lt; &gt;</code> and double quotes <code>"</code> are HTML-encoded.</li>
+    </ul>
+
+    <p>✅ <strong>Observation:</strong> <code>&amp;apos;</code> (<code>'</code>) can be used to represent a single quote <strong>if</strong> HTML encoding is parsed before JavaScript execution.</p>
+
+    <h3>4. Plan How to Break Out of Context</h3>
+    <p><strong>Goal:</strong> Break out of the <code>'...'</code> JavaScript string safely. Close the current string with <code>'</code> (or <code>&amp;apos;</code>), inject JavaScript (e.g., <code>alert(1)</code>), and prevent syntax errors.</p>
+
+    <p><strong>Example Attack Plan:</strong></p>
+    <pre><code>https://www.google.com&amp;apos;-alert(1)-&amp;apos;</code></pre>
+
+    <p>Which results in:</p>
+    <pre><code>tracker.track('https://www.google.com'-alert(1)-'');</code></pre>
+
+    <p>✅ This is valid JavaScript.<br>✅ The <code>alert(1)</code> gets executed.</p>
+
+    <p><strong>Why use <code>-</code>?</strong></p>
+    <ul>
+        <li><code>-</code> (minus) operators are neutral and keep JavaScript valid between expressions.</li>
+        <li>Without <code>-</code>, you could cause syntax errors.</li>
+    </ul>
+
+    <h3>5. Execute and Validate</h3>
+    <ul>
+        <li>Submit the payload in the comment author name.</li>
+        <li>Click the author name to trigger the <code>onclick</code> event.</li>
+        <li>Popup appears ✅.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Final General Methodology for Similar Situations</h2>
+    <ol>
+        <li><strong>Find out where your input is reflected.</strong></li>
+        <li><strong>Understand the surrounding context</strong> (HTML? Attribute? JavaScript inside quotes?).</li>
+        <li><strong>Check escaping/encoding:</strong>
+            <ul>
+                <li>Are quotes (<code>'</code>, <code>"</code>) escaped?</li>
+                <li>Are angle brackets (<code>&lt;</code>, <code>&gt;</code>) encoded?</li>
+                <li>Are backslashes (<code>\</code>) escaped?</li>
+            </ul>
+        </li>
+        <li><strong>Choose a strategy to break out:</strong>
+            <ul>
+                <li>If inside a single quote: use <code>&amp;apos;</code> if supported.</li>
+                <li>Close the quote, inject your payload (e.g., <code>alert(1)</code>), and close cleanly.</li>
+            </ul>
+        </li>
+        <li><strong>Use neutral JavaScript operators like <code>-</code> to avoid breaking the syntax.</strong></li>
+        <li><strong>Test your payload carefully in the developer console.</strong></li>
+        <li><strong>Refine your payload if needed to adapt to extra filtering.</strong></li>
+    </ol>
+
+    <hr>
+
+    <h2>Quick Payload Template for Similar Labs</h2>
+    <pre><code>[original URL/param]&amp;apos;-alert(1)-&amp;apos;</code></pre>
+
+    <hr>
+
+    <h2>Tips</h2>
+    <ul>
+        <li>Always view the <strong>developer tools</strong> to see exactly how your input lands.</li>
+        <li>Understand if the application parses HTML encoding back into real characters before using your input.</li>
+        <li>If double quotes are allowed instead, different strategies (like breaking out with <code>"</code>) would apply.</li>
+        <li>If nothing works, try injecting <strong>event handlers</strong> or <strong>JavaScript expressions</strong> directly if possible.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Example Summary</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Context</th>
+                <th>Escaping</th>
+                <th>Injection Strategy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Inside <code>'...'</code> (single quotes)</td>
+                <td><code>'</code> escaped as <code>&amp;apos;</code></td>
+                <td>Break out with <code>&amp;apos;</code>, inject payload, balance quotes</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Mission:</h2>
+    <p>Trigger JavaScript execution safely while maintaining syntax correctness! 🚀</p>
+
+    <h2>End of Methodology</h2>
+</body>
+</html>
