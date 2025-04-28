@@ -1,0 +1,12 @@
+LAB INFO: Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped
+
+ANALYSIS:
+1. Open the search box and type simple string such as: 123456 into it
+2. And then we can see this is how it reflected in the <string> tag:
+     2.1                            var message = `0 search results for '123456'`;
+                            document.getElementById('searchMessage').innerText = message; 
+     2.2 Since it's showing inside the backticks so we can use js template string interpolation to execute the code.
+
+3. This ${} syntax is JavaScript template string interpolation. (like: inside backticks ``, anything inside ${} will be executed as code, not treated as normal string.)
+
+4. So let's pass the payload: ${alert(1)} ==> This does give me alet() popup successfully
