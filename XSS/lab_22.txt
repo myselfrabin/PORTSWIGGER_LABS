@@ -40,4 +40,4 @@ ANALYSIS:
 5. And then we will get the secret and session cookie from the victim browser to our own browser
 6. So, going into the login page and using that cookie can let us to login and administrator user
 
-HENCE WE SOLVED THE LAB
+HENCE WE SOLVED THE LAB.
