@@ -22,3 +22,7 @@ n. Some other time: DOM REFLECTED
 3. If it's shown only on the <h1><p> tag then it's not DOM based we kinda leave it and check for the js links for more info.
 4. Look any javascript code link there check that js file and try to understand that code how we can execute the xss
 5. Read the js code and according to that try to exploit it
+
+12. LAB:
+1. If certain tag like: < and > is being encoded as html and try it with other tag as well like: 
+   1.1 <><test> ==> Might be <test> would be visible and not blocked
