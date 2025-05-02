@@ -1,0 +1,18 @@
+LAB INFO: CSRF where token validation depends on token being present
+
+MORE INFO:  This lab's email change functionality is vulnerable to CSRF.
+
+To solve the lab, use your exploit server to host an HTML page that uses a CSRF attack to change the viewer's email address.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+
+ANALYSIS:
+1. OPen the lab and login with the given credentials.
+2. It is giving me csrf=some_random_token in the email change functionality
+3. Now let's try it with removing that csrf token part and see how it behaves,(this is with the POST request) ==> Yes, it's a valid request it's giving me redirecting  follow that redirecting it let me change the email.
+4. Now, I will try to generate the csrf poc from the burp professional on that same request with removed csrf token.
+5. Let's first verify the steps to perform csrf attack
+    5.1 A relevant action- change the email(good to go)
+    5.2 Cookie based session handling- we have it (good to go)
+    5.3 No unpredictable request- we remove csrf parameter and the only url remains is email parameter (so we are good to go here too)
