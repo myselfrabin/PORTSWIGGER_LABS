@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSRF Exploitation Roadmap</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      background-color: #f7f9fb;
+      color: #333;
+    }
+    h1, h2 {
+      color: #007acc;
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Professional CSRF Exploitation Roadmap</h1>
+  <p>This roadmap is designed for web hackers and bug bounty hunters to identify and exploit CSRF (Cross-Site Request Forgery) vulnerabilities effectively.</p>
+
+  <h2>✅ 1. Recon and Target Identification</h2>
+  <ul>
+    <li>Look for <strong>state-changing requests</strong> like <code>POST</code> to <code>/change-email</code>, <code>/delete-account</code>, etc.</li>
+    <li>Use Burp Suite to intercept and analyze requests triggered from the UI.</li>
+    <li>Focus on <strong>authenticated actions</strong> requiring user login.</li>
+  </ul>
+
+  <h2>🔍 2. Check for CSRF Protection Mechanisms</h2>
+  <ul>
+    <li>Look for CSRF tokens (e.g., <code>csrf</code>, <code>token</code>) or custom headers.</li>
+    <li>Inspect if cookies have <code>SameSite</code> attributes: <code>Lax</code>, <code>Strict</code>, or <code>None</code>.</li>
+    <li>If a token is <strong>missing or predictable</strong> → high chance of vulnerability.</li>
+  </ul>
+
+  <h2>🔄 3. Generate a CSRF Proof of Concept (PoC)</h2>
+  <p>Use Burp Suite’s CSRF PoC generator or create one manually:</p>
+  <pre><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action="https://target.site.com/path/to/change" method="POST"&gt;
+      &lt;input type="hidden" name="param" value="malicious_value" /&gt;
+      &lt;input type="hidden" name="csrf" value="hardcoded_or_missing_token" /&gt;
+      &lt;input type="submit" value="Submit request" /&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      history.pushState('', '', '/');
+      document.forms[0].submit();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <ul>
+    <li>Host on a different origin (e.g., attacker.com).</li>
+    <li>Deliver via phishing, email, embedded iframe, etc.</li>
+  </ul>
+
+  <h2>🧪 4. Test the CSRF PoC</h2>
+  <ul>
+    <li>Log in as victim in one browser.</li>
+    <li>Open your PoC page in another tab or iframe.</li>
+    <li>If the state change succeeds silently → <strong>valid CSRF</strong>.</li>
+  </ul>
+
+  <h2>🛠️ 5. Bypass Techniques (If Token Present)</h2>
+  <ul>
+    <li>Check for static or reusable tokens.</li>
+    <li>Tokens not rotated or validated.</li>
+    <li>Misconfigured <code>SameSite</code> attributes.</li>
+    <li>Predictable token values.</li>
+  </ul>
+
+  <h2>🪓 6. Impact Demonstration</h2>
+  <ul>
+    <li>Show how CSRF can lead to email change, password reset, or account deletion.</li>
+    <li>Provide clear proof: screenshots or demo video.</li>
+  </ul>
+
+  <h2>📝 7. Reporting</h2>
+  <ul>
+    <li><strong>Title:</strong> CSRF on Change Email → Account Takeover</li>
+    <li><strong>URL:</strong> <code>https://example.com/my-account/change-email</code></li>
+    <li><strong>PoC:</strong> Include HTML + steps</li>
+    <li><strong>Impact:</strong> Exploits authenticated trust and changes sensitive data.</li>
+    <li><strong>Fix:</strong>
+      <ul>
+        <li>Implement anti-CSRF tokens (random per request).</li>
+        <li>Use <code>SameSite=Strict</code> or <code>Lax</code>.</li>
+        <li>Check <code>Origin</code> or <code>Referer</code> headers.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>🧠 Bonus Tips</h2>
+  <ul>
+    <li>Check for <strong>GET-based CSRF</strong> (less common, more dangerous).</li>
+    <li>Focus on mobile apps or outdated admin panels.</li>
+    <li>Use Burp extensions like <strong>CSRF Scanner</strong>.</li>
+    <li>Chain CSRF with <strong>IDOR</strong> or <strong>XSS</strong> for greater impact.</li>
+  </ul>
+
+  <p><em>Stay curious, stay ethical — and happy hacking! ⚔️🧠</em></p>
+</body>
+</html>

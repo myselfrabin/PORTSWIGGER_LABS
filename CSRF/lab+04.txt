@@ -1,0 +1,42 @@
+LAB INFO: CSRF where token is not tied to user session
+
+MORE INFO ON THIS LAB:  This lab's email change functionality is vulnerable to CSRF. It uses tokens to try to prevent CSRF attacks, but they aren't integrated into the site's session handling system.
+
+To solve the lab, use your exploit server to host an HTML page that uses a CSRF attack to change the viewer's email address.
+
+You have two accounts on the application that you can use to help design your attack. The credentials are as follows:
+
+    wiener:peter
+    carlos:montoya
+
+
+
+ANALYSIS: 
+To be csrf attack we need to focus on the three basics point:
+1. A relevant action - change email so it's true
+2. There should be a cookie based session handling - yes there is cookie based session handling so it's true too
+3. No unpredictable request parameter should be present - there is two parameter one is email and another is csrf while email parameter is predictable but the csrf parameter is generated randomly we can't predict it so we can't say that the third point is satisfied.
+    3.1 However depending on the implementation of how csrf token is generated, or how they implemented and integrated in the application this can still be vulnerable
+
+
+SO LET'S PERFORM SOME TEST CASES:
+1. Remove the csrf token and see if it's applicable for the response or not --> It says missing parameter csrf so it's not applicable
+2. Change the request method from POST to GET --> it's saying the "method not allowed so it's not relevant too"
+     2.1 If it's applicable in the GET method, we will be checking by removing the csrf token because most of the application doesnot use csrf in the GET method they use it in the POST method.
+3. Next thing to check is see if it actually requires the valid token or not --> yes it's require a valid token the token value is being checked in the background.
+4. See if csrf token is tied to the user session --> This is a way to tell that the given csrf token is generate for the given user account only.{tai user ko lagi matrai tyo csrf token aru ko lagi haina vanne type ko}
+5. So what I did is:
+   5.1 Created another account and login and get their csrf token.
+   5.2 And then I use that csrf token into the wiener account it gives me valid request no nothing error
+   5.3 This does proves me that csrf token is not tied to the user session, but it's only one time used
+
+6. Now next thing is to do is get the working exploit of this
+
+
+
+
+
+
+
+NOTE WHILE SOLVING THIS LAB: THe csrf token is generated one time it being changes with every request hai.
+
