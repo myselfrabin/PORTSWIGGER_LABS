@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CSRF & SameSite Cookie Explanation</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    code {
+      background: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    .nepali {
+      background: #ecf9f1;
+      padding: 10px;
+      border-left: 5px solid #27ae60;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛡️ CSRF Attack Example & Strong Cookie Guide</h1>
+
+  <h2>🎯 Goal:</h2>
+  <ul>
+    <li>Show how CSRF attack works</li>
+    <li>Show how to prevent it with <code>SameSite</code> and secure cookies</li>
+  </ul>
+
+  <h2>🧑 Victim's Side: vulnerable-site.com</h2>
+  <p>Victim is logged in, and cookie is set like this:</p>
+  <pre>Set-Cookie: sessionid=abc123; Path=/; HttpOnly;</pre>
+
+  <p>But it has no <code>SameSite</code>, so it's sent with all requests.</p>
+
+  <h2>💣 Attacker's Site (attacker-site.com)</h2>
+  <p>The attacker makes this auto-submitting form:</p>
+  <pre>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action="https://vulnerable-site.com/change-email" method="POST" id="csrfForm"&gt;
+      &lt;input type="hidden" name="email" value="hacker@evil.com"&gt;
+    &lt;/form&gt;
+    &lt;script&gt;document.getElementById("csrfForm").submit();&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+  <p><strong>Result:</strong> Email gets changed to hacker's without user's knowledge!</p>
+
+  <h2>🔒 How to Make Cookie Strong</h2>
+
+  <h3>✅ Fix #1: SameSite=Lax</h3>
+  <pre>Set-Cookie: sessionid=abc123; Path=/; HttpOnly; SameSite=Lax</pre>
+  <p>Blocks cross-site POST requests — CSRF fails!</p>
+
+  <h3>✅ Fix #2: SameSite=Strict</h3>
+  <pre>Set-Cookie: sessionid=abc123; Path=/; HttpOnly; SameSite=Strict</pre>
+  <p>Only allows cookie in same-site context. Safer but may affect usability.</p>
+
+  <h3>✅ Fix #3: Use CSRF Token</h3>
+  <p>Example:</p>
+  <pre>&lt;form action="/change-email" method="POST"&gt;
+  &lt;input type="hidden" name="csrf_token" value="abcde12345"&gt;
+  &lt;input type="email" name="email"&gt;
+&lt;/form&gt;</pre>
+
+  <h2>🔐 Final Strong Cookie Recommendation</h2>
+  <pre>Set-Cookie: sessionid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</pre>
+
+  <ul>
+    <li><strong>HttpOnly</strong>: Protects from JavaScript (XSS defense)</li>
+    <li><strong>Secure</strong>: Only sent over HTTPS</li>
+    <li><strong>SameSite</strong>: Defends against CSRF</li>
+    <li><strong>CSRF Token</strong>: Adds extra security</li>
+  </ul>
+
+  <h2>📘 Nepali Summary (नेपालीमा सजिलोमा बुझौं)</h2>
+  <div class="nepali">
+    <p><strong>SameSite=Lax</strong> ले cross-site बाट आएको POST request मा cookie पठाउन दिँदैन। यसले CSRF रोक्न सहयोग गर्छ।</p>
+    <p><strong>SameSite=Strict</strong> ले बाहिरी site बाट आएको कुनै पनि request मा cookie पठाउँदैन। यो अझ कडा सुरक्षा हो।</p>
+    <p><strong>HttpOnly</strong> ले JavaScript बाट cookie चोर्ने XSS हमला रोक्छ।</p>
+    <p><strong>Secure</strong> ले cookie केवल HTTPS मा मात्र पठाउन दिन्छ।</p>
+    <p><strong>CSRF token</strong> ले वास्तविक user बाट आएको request हो कि होइन भनेर confirm गर्छ।</p>
+  </div>
+
+  <h3>📊 सारांश तालिका</h3>
+  <table>
+    <tr>
+      <th>SameSite सेटिङ</th>
+      <th>GET मा cookie?</th>
+      <th>POST मा cookie?</th>
+      <th>उपयुक्त प्रयोग</th>
+    </tr>
+    <tr>
+      <td>Strict</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>अत्यधिक सुरक्षा</td>
+    </tr>
+    <tr>
+      <td>Lax</td>
+      <td>✅</td>
+      <td>❌</td>
+      <td>सामान्य login/session</td>
+    </tr>
+    <tr>
+      <td>None</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>3rd-party tools, but Secure=true अनिवार्य</td>
+    </tr>
+  </table>
+
+  <p>अब तिमीले CSRF कसरी काम गर्छ र यसलाई रोक्न के गर्ने भन्ने गहिरो बुझाइ पायौ। 💡</p>
+
+</body>
+</html>
