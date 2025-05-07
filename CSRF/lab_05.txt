@@ -1,0 +1,22 @@
+LAB INFO: CSRF where token is not tied to user session
+
+GIVEN CRED: wiener: peter
+            carlos: monotya
+
+STEPS TO SOLVE THIS LAB:
+1. Open the lab and login with the victim account i.e wiener
+2. Go for it and you will see their email change fn change the email of the victim
+3. You will notice that there is email parameter and csrf parameter
+4. And there is cookie i.e session and csrfkey
+5. So I have a doubt that may be that csrf token  tied to user csrfkey session
+6. And yes it's tied.
+VICTIM: 
+               csrf: 1OtnNaz4DDFjs8nwgvth6sxYOVhEkzK7
+               csrfkey: VNORecgHU4odNXxOznJIOtxDMsevs9Ex
+7. Now let's open the attacker id in next inconginito window and get their csrf token and csrfkey
+    ATTACKER:
+             csrf:SE4UOCF4YNqafqDAeTl5Zsf4DQg7qRGQ
+             csrfkey:utcZcggOtItmhsWdyp7ccj6t0l79E4mR;
+8. Now let's try to search something in the mainpage and we can see that their is something called lastSearch cookie is being made:
+    8.1 GET /?search=rabin\r\nSet-Cookie%3a+csrfKey%3dutcZcggOtItmhsWdyp7ccj6t0l79E4mR HTTP/2 ==> We send this request and this successfully sends 200OK
+    8.2 
