@@ -1,0 +1,20 @@
+LAB INFO: Basic password reset poisoning
+
+MORE INFO:   This lab is vulnerable to password reset poisoning. The user carlos will carelessly click on any links in emails that he receives. To solve the lab, log in to Carlos's account.
+
+You can log in to your own account using the following credentials: wiener:peter. Any emails sent to this account can be read via the email client on the exploit server.
+
+
+GIVEN CREDS: wiener:peter
+
+VICTIM CREDS: carlos:?????
+GOAL : I have to login into the carlos account to complete the lab.
+
+ANALYSIS:
+1. Login into your account and listen it into the burp.
+2. I have the /login request and it contain the: Host: 0a79006803ea7b1280ff0dde001600ed.web-security-academy.net
+and also the, csrf=HABVIRXVgglMVQz8R0MR74IAGQaO3ztG&username=wiener&password=peter
+3. There is an forget password field while login so, I did put carlos username and go to the forget password field
+4. And there comes a email or username field I simply put a carlos username and modified the host 
+   as: Host: exploit-0a2300fb03027b6880530cfb01c600e3.exploit-server.net and that the reset link is gone to the my exploit server.
+5. And from there I change the password and login as carlos and complete the lab.
