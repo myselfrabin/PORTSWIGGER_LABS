@@ -8,3 +8,25 @@ To solve the lab, access the admin panel and delete the user carlos.
 
 GIVEN CREDS: None 
 GOAL: Access the admin panel
+
+STEPS : 
+Let's start another lab02
+
+We can't login with any user name or password
+
+We have to find the admin panel and delete the carlos user here
+
+ONe thing always do is: /robots.txt ==> ALways try to look for this
+Look /admin is disallow from surfing let's try to access it
+Look it comes unauthorize it's only availabe to local user only==> The developer assume here only the local usrs can access the admin panel not others 
+
+Here's HOst let's try to add another Host as localhost i.e 
+Host: localhost 
+It didnot come anything now let' s try to remove first one host and add our Host: localhost 
+Look it gives me 200ok res let's check have we access admin panel or not?? ==>                            <a href="/admin">Admin panel ==> Yes we have let's delete the user carlos now
+We have done this lab 
+
+
+SO HERE IS TWO VULNERABILITY
+1. The application accepts any arbitary  host value
+2. It uses that host value in order to determine that the user is coming from local persective or not and we will bypass the vulerable authentication mechanism and access the admin panel
