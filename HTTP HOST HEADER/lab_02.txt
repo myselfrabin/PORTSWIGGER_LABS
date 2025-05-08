@@ -30,3 +30,6 @@ We have done this lab
 SO HERE IS TWO VULNERABILITY
 1. The application accepts any arbitary  host value
 2. It uses that host value in order to determine that the user is coming from local persective or not and we will bypass the vulerable authentication mechanism and access the admin panel
+
+
+WE DID HERE: WE WERE ABLE TO SUCCESSFULLY EXPLOIT THE HOST HEADER VULN INORDER TO BYPASS AUTHNETICATION GAIN ACCESS TO THE ADMIN PANEL AND THEN DELETE THE CARLOS USER.
