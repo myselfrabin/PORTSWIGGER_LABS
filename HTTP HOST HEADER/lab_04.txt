@@ -1,0 +1,67 @@
+LAB INFO: Routing based SSRF
+
+GOAL: Access the internal server login as admin and delete the user carlos
+
+
+
+STEPS TO SOLVE:
+Hey guys let's do another lab i.e HOST HEADER ATTACK BASED ON THE SSRF i.e server side request forgery what this does??
+==> Using the ssrf we can take the internal server of the application 
+
+ |Application server,  server1   server2     server3 | ==> Let' s assume this two notation || are firewalls of the server here we got
+ so by using the ssrf vulnerability we can access that internal servers
+ 
+ 
+ OK LET' S MOVE TO THE LAB NOW
+ 
+ LET'S CHECK FOR THIS HOST FIELD IF IT'S INJECTABLE OR NOT
+ Host: rabingaire.com.np
+ Host: 0ad0000103f5d6e082ffc98700b30062.web-security-academy.net
+ 
+ It's not directly executable it happens something in the backend and gives me a 500 line erorr i.e 504 server timeout 
+ Let's make our own server and try to look here what happens
+ ceun7lbca2kv0gx0a1fmgcm4lvrmfc31.oastify.com ==> This is our burp collabator address this is like our own server
+ Let' s put it in the host field
+ Ok it gives me 200 ok res let's check it
+ So the ping back came into our server so this does confirms there is  ssrf vulnerabilty in this application 
+ 
+ Now we know this server ip in the lab info but in real life you have to recon for this: 192.168.0.0/24 
+ There is total 256 ip are here 
+ But only 254 are useable ip because one for the network and one for the broadway address so; 256-2=254 (Total useable ips)
+ Let's scan this ip and get the result
+ 
+ The ip are like: 192.168.0.0
+                   192.168.0.1 ==> so we have to bruteforce tha last part
+                   192.168.0.2
+                   192.168.0.3
+                   192.168.0.4
+Let's start the attack
+We did small mistake here i.e 
+we have to untick that update host header to match target becaues I don't want that I only need to scan that ips
+Ignore and moveon
+Look theres is 302 redirect on admin path on 192.168.0.61 (this ip)
+
+We got a admin panel i.e we are now login as a admin ==> ok when we try to access like this it's not found let's try directly i.e by giving the /admin path
+Look it's 200ok and we are now admin user
+This is a admin panel here is a username and delte that user field so now we have to delete the carlos user let's put carlos there
+It's saying not found giving me a 400 error because it request goes from the website host field not from the internal ip 
+We got admin ip i.e      192.168.0.61 let's put this in the host field and send the request to /admin/delete path
+Look it got me redirect into the home i.e / ==> seems like carlos is deleted let's check
+
+
+YES WE DELETE THE CARLOS AND SOLVED THIS ROUTING BASED SSRF LAB             
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
