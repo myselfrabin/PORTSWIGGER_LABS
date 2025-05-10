@@ -1,0 +1,30 @@
+LAB INFO: Web cache poisoning via ambiguous requests
+
+GOAL: Execute the alert(document.cookie) in hompepage that will affect all the users
+
+STEPS TO SOLVE:
+
+LOok there is X-Cache: hit {this means this request is came from the cache not directly from the backend}
+
+LET'S TRY to add another host and see what it happens: 
+Host: rabingaire.com
+Obviously it comes miss because we are sendig this request first time let's send fere and it should give me the hit==> So, now let's check the host rabingaire.com is being reflected somewhere in backend or not 
+<script type="text/javascript" src="//rabingaire.com/resources/js/tracking.js"></script> ==> Yes, it's being reflected in the .js file
+It's being reflected in javascript file, the source of that js is: <host>/resources/js/tracking.js 
+Now we can add the dangerous js code such as xss in that file 
+
+AND ALWAYS MAKE SURE THAT: while exploiting the web cache poisioning it could affect the other live users as well so always use cache buster ==> 
+Cache Buster?? what that mean??
+  Ans: It's sometype of parameter after using this only your page will be affected after successfully exploited not any other
+  It's something looks like: ?cb=random_number
+  
+Let's add a alert code here which is normally we called xss payload ==> as we are already in the <script> tag we will not use the <script> just simple: alert(document.cookie); this will get the cookie of the users
+
+OK THE xss code has been added now what we can do is:
+ We can use the host header injection here by usin the attacker control server
+ Yes it's being 200ok res let's check it is reflected in backend or not 
+ Yes it's being reflected let's cached it and then visit the page 
+ It comes hit let's visit this in the website
+ 
+ Ohh the mistake is I am not adding it in the file: i.e  
+Yes, now it gives me an popup we have solved it.
