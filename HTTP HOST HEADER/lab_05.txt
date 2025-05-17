@@ -1,0 +1,46 @@
+LAB INFO: SSRF via flawed request parsing
+
+
+GOAL: Get the /admin panel and delete the carlos user
+
+CREDS: None
+
+
+STEPS OR STEPS TO REPRODUCE:
+Let's do the lab....
+This lab is : SSRF via flawed request parsing
+
+AS WE ALREADY KNOW WHAT IS SSRF WE MOVE DIRECTLY TOWARDS THE LAB
+
+
+GET / ==> This is a homepage request...
+Let' s try to put extra host i.e 
+Host: rabingaire.com.np
+ok it's gives me nothing means something has happened in the backend now let's remove first host and then put second one
+Host: 0afa00c20432b6b0843e27790001004f.web-security-academy.net ==> May be or not needed later
+only: Host: rabingaire.com.np ==> Ok it gives me 403 error
+
+why not I try to access this via absolute url: 
+There is something called absolute and realative url i.e
+
+ABSOLUTE URL: An absolute url contain the entire address from the protocol(HTTPS) to the domain name(www.example.com) and include the location within your website within your folder system(/foldername A or foldername B) names within the URL.
+                            It's a full URL page that we link to: 
+                            <a href="https://www.example.com/xyz.html">
+                            
+RELATIVE URL:  It does not use the full web address it only contain the location following the domain.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            

