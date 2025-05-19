@@ -4,6 +4,7 @@ GOAL: FIND THE INTERNAL SYSTEM USING SSRF AND DELETE THE USER CARLOS
 
 To solve the lab, change the stock check URL to access the admin interface at http://localhost/admin and delete the user carlos. 
 
+VULNERABLE FEATURE: stock check functionality
 
 WAYS TO SOLVE IT:
 
