@@ -1,0 +1,49 @@
+LAB INFO:  This lab has a stock check feature which fetches data from an internal system.
+
+GOAL: FIND THE INTERNAL SYSTEM USING SSRF AND DELETE THE USER CARLOS
+
+To solve the lab, change the stock check URL to access the admin interface at http://localhost/admin and delete the user carlos. 
+
+
+WAYS TO SOLVE IT:
+
+
+Lab 01- Here we are doing the basic SSRF 
+
+GOAL: Find the admin panel using the ssrf vulnerability and delete the user carlos
+
+There was no creds given so I didnot go to the login page I am just viewing the other page and finding out where can I put ssrf payload:
+
+
+So been doing the scraping(website visit gardai jada) I found one POST request i.e /product/stock and parameter i.e stockApi=some_website_link and it's showing it's content as the response so here definitely worth  trying for the Regular SSRF attack hai.
+
+NOW WHAT CAN I DO IS??
+==> stockApi=http://localhost/ --> let's see how it reacts 
+==> ok it gives me 200OK res
+==> now also let's try for an /admin path as well....
+stockApi= http://localhost/admin ==> yes in response it actually gives me an /admin panel 
+This does proves that we can access the internal /admin panel now we can view it and delete the carlos user
+
+so while deleting the username carlos we got a GET request i.e 
+GET /admin/delete?username=carlos ==> while we trying to delete this 401 Unauthorized this came in the response because we are trying it by regualr host not from the localhost let's try it from localhost and see 
+Host: localhost ==> this didnot gives any
+we also see there that:
+Referer: https://0a9900b00314406b80eccb9e00c400d1.web-security-academy.net/product/stock 
+we can change this as:
+Referer: http://localhost/admin ==> we are saying here that we are refering from this path so it must accept let's try it
+
+This all is not working at last what worked is:
+THE POST REQUEST: 
+POST /product/stock 
+and the stockApi=http://localhost/admin/delete?username=carlos
+because this is the path admin/delete?username=carlos ==> we get while deleting the username and we put it in the stockApi field that is vulnerable to ssrf.
+
+
+
+
+
+
+
+
+
+
