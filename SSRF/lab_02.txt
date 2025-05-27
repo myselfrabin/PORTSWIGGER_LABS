@@ -1,0 +1,68 @@
+Hey guys let's do the lab:02 on the ssrf i.e
+
+ Basic SSRF against another back-end system
+ 
+ Let's go towards lab hai 
+ To do: delete the carlos user by gaining the admin priviledge
+ 
+ We sent this home request i.e GET / ==> ANd the host is 
+ host: website_host let's try by changing the host here
+ Host: 0a6a000403318b0f80269fba008e005a.web-security-academy.net ==> This is original now let's try it with
+ Host: localhost ==> it's not giving me any response we can't do anything here hai ta
+ 
+ let's analyze the more feature of the website
+ 
+ In the endpoint /product/stock there was an parameter called i.e stockApi=http://192.168.0.1:8080/product/stock/check?productId=1&storeId=1 now here I can try here the ssrf beacuse there http://192.168.0.1:8080 has been used in this type of field I can used for the ssrf hai
+ 
+ let's do it:
+ http://192.168.0.bruteforce_it/admin --> let's used this hai
+
+Look we got 200OK in the http://192.168.0.113:8080/admin ==> let's view it
+
+yes we got the admin panel let's delete the carlos user
+
+/admin/delete?username=carlos ==> This endpoint is been used to delete the carlos user
+so the:
+stockApi=http://192.168.0.113:8080/admindelete?username=carlos ==> This endpoint is been used let's send it
+it gives me 404 not found let's encode it and send it again yes it gives me 302 redirect to the http://192.168.0.113:8080/admin ==> This location seems like the carlos user has been deleted
+yes when we view the admin page the user carlos has been deleted.
+
+Let's script this in the python???
+how to do it????
+1. Access the /product/stock page and bruteforce it for the correct ip for the admin
+
+2. After finding the correct ip for the admin page now do delte the carlos user by this endpoint i.e /admin/delete?username=carlos ==> let's do it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

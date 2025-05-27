@@ -1,0 +1,16 @@
+LAB INFO: Blind SSRF with out-of-band detection
+
+MORE LAB INFO:  This site uses analytics software which fetches the URL specified in the Referer header when a product page is loaded.
+
+To solve the lab, use this functionality to cause an HTTP request to the public Burp Collaborator server. 
+
+
+
+VULNERABLE PARAMETER: Product page of the refrer header
+
+STEPS TO SOLVE: 
+1. I opened the main website there homepage and check there Host field and the Referer field by burp collabarator but didnot find any issue that it is vulnerable to SSRF
+2. And then I go to the view details page which is product page: it's url looks like: /product?productId=1
+3. And I check there Host field but also didnot find any 
+4. And then again, I check a Refrer field by putting my burpcollabarator and the response has been ping back to my server.
+5. This is how I solved my lab
