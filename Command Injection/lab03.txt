@@ -1,0 +1,12 @@
+LAB INFO: BLIND COMMAND INJECTION WITH OUTPUT REDIRECT
+
+TO SOLVE THE LAB: Redirect the output to the /var/www/images/ and view the content of the file there.
+
+ANALYSIS: 
+1 .Confirm where is blind command INJECTION ==> It's in email field
+2. Now give the command as: 
+  & whoami > /var/www/images/whoami.txt # ==> url encode It
+3. NOw the blind command will be got injected
+4. Now view the where does images are stored it will show like: image?filename=1.jpg
+5. Now change the 1.jpg to our filename i.e whoami.txt
+6. And then boom it will show me the output of the whoami command
