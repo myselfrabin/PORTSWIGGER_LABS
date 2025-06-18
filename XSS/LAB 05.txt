@@ -1,7 +1,0 @@
-LAB 05: DOM XSS IN JQUERY ANCHOR HREF
-
-TARGET: MAKE XSS POPUP 
-
-ANALYSIS: 
-
-javascript:alert("xss")
