@@ -1,6 +1,0 @@
-LAB 02: STORED XSS WITH NOTHING ENCODED
-
-TARGET GOAL: Find XSS to call alert function.
-
-ANALYSIS:
-
