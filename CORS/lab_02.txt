@@ -1,0 +1,25 @@
+LAB: CORS vulnerability with trusted null origin
+
+MORE INFO:  This website has an insecure CORS configuration in that it trusts the "null" origin.
+
+To solve the lab, craft some JavaScript that uses CORS to retrieve the administrator's API key and upload the code to your exploit server. The lab is solved when you successfully submit the administrator's API key.
+
+You can log in to your own account using the following credentials: wiener:peter
+
+
+CREDS: <wiener>: <peter> 
+
+VULNERABLE POINT: This is cors misconfiguration that trust the "null" origin.
+
+STEPS TO SOLVE:
+1. Open the lab and login to the given creds.
+2. ANd see the burphistory and then you will see the /accountDetails endpoint.
+3. See it's resopnse you will see the email and api are leaked here also the -> Access-Control-Allow-Credentials: true --> This does proves that that it uses the cors
+4. Let's try for the cors vulnerability here: 
+    4.1 Origin: https://attacker.com --> add this in the request of /accountDetails 
+         4.1.1 So no Access-Control-Allow-Origin shows in the response so this is not valid
+    4.2 Origin: null -> let's try for the null origin 
+       4.2.1 It does shows the: Access-Control-Allow-Origin: null in the resopnse so it confirms that the cors vulnerability is present here
+5. Since we know that cors is present here now let's try to create a poc and submit it to the exploit server.
+   5.1 We will be using the AJAX to fetch data from the server.
+6. While writing the script don't forget to add the iframe and sandbox: allow-scripts because we are going to accept the null origin with only this using the sanbox the browser will accept the null origin.

