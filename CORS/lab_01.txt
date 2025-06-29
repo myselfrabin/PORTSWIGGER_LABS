@@ -1,0 +1,26 @@
+LAB INFO: CORS vulnerability with basic origin reflection
+
+MORE INFO:   This website has an insecure CORS configuration in that it trusts all origins.
+
+To solve the lab, craft some JavaScript that uses CORS to retrieve the administrator's API key and upload the code to your exploit server. The lab is solved when you successfully submit the administrator's API key.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+GOAL: Get the administrator API KEY get it and submit it
+
+VULNERABLE POINT: There is a CORS misconfiguration that trust all the origins.
+
+CREDS: <wiener>:<peter>
+
+STEPS TO SOLVE: 
+1. OPEN THE LAB AND TRY EVERYTHING LIKE LOGIN AND CHANGING EMAIL ETC  basically map the application
+2. ANd then when you see the proxy history tab you can see there : /accountDetails endpoint see that response
+3. ON the /accountDetails endpoint you can see the: Access-Control-Allow-Credentials : true 
+4. So from here we know that the application is using an CORS
+5. Now add in the request tab: 
+  5.1 Origin: https://attacker.com
+6. ANd send the request and in the response we can see that: 
+    6.1 Access-Control-Allow-Origin: https://attacker.com
+    6.2 Access-Control-Allow-Credentials: true
+7. From here we know that it's vulnerable to CORS
+8. And we have to get the api of admin and we are trying it the script
