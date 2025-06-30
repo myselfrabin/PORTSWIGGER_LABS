@@ -1,0 +1,37 @@
+LAB INFO:  CORS vulnerability with trusted insecure protocols
+
+MORE INFO:  This website has an insecure CORS configuration in that it trusts all subdomains regardless of the protocol.
+
+To solve the lab, craft some JavaScript that uses CORS to retrieve the administrator's API key and upload the code to your exploit server. The lab is solved when you successfully submit the administrator's API key.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+VULNERABLE POINT: It's vulnerable to the cors vulnerability, which is due to the cors misconfiguration.
+
+CREDS: <wiener> : <peter>
+
+
+TIPS FOR TESTING FOR THE CORS MISCONFIGURATION:
+1. Change the origin header to the arbitary value.
+2. Change the origin headder to the null value.
+3. Change the origin header to one that begins with the origin of the site.
+4. Change the origin header to one that ends with the origin of the site.
+
+
+
+
+STEPS TO SOLVE: 
+1. Open the lab and login with your credentials.
+2. After that you will see that, /accountDetails endpoint there the api key, email and other things are been exposed.
+3. The main thing you will see there is: Access-Control-Allow-Credentials : true --> this does says that there is an CORS used 
+4. So we will now check for the CORS vulnerability --> 
+5. We will put the origin in the request field and see the reponse of it to check for the vulnerability.
+     5.1 origin: https://random.com --> Nothing intresting
+     5.2 origin: null --> Nothing intresting
+     5.2 origin: website_host --> Nothing_intresting
+     5.2 origin: subdomain.website_host --> shows us in the response: Access-Control-Allow-Origin: subdomain.website_host 
+         5.2.1 From here we know that there is an CORS bug now we have to find that subdomain in the webiste {by doing recon}
+         5.2.2 And then we can triggered XSS there and from there we can add our script and give it to the exploit server.
+6. When doing the recon on the website we found the: stock.0aab005203077b1f805f0333001100a8.web-security-academy.net --> THis subdomain let's check here 
+7. GET /?productId=<script>alert(1);</script>&storeId=1 HTTP/1.1 --> This request their it popus the 1 it confirms that there is an XSS.
+8. So now we can add our script here in the place of the alert(1) after script tag and give it to the exploit server.
