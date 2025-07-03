@@ -1,0 +1,21 @@
+LAB INF0: Basic clickjacking with CSRF token protection
+
+MORE INFO: This lab contains login functionality and a delete account button that is protected by a CSRF token. A user will click on elements that display the word "click" on a decoy website.
+
+To solve the lab, craft some HTML that frames the account page and fools the user into deleting their account. The lab is solved when the account is deleted.
+
+You can log in to your own account using the following credentials: wiener:peter
+
+VULNERABLE POINT: 
+1. The given page is vulnerable to clickjacking in the main user page because there is no csp protection or X-Frame-Options present in the response to protect the page from being framed.
+
+
+STEPS TO SOLVE: 
+1. Login with your given credentials
+2. YOu will land in your page such as: my-account?id=wiener with intresting delete-account button 
+3. And in the burp reponse part we see nothing there like: X-Frame-Options: DENY or any other csp protection
+4. Try to frame the content --> it's being successfully framed
+5. And then we frame the website with user attention CLICK ME in the top of the delte-account button
+6. Now when user (victim) clicks the CLICK ME button, it will click the delete-account button and delete the account of the victim
+
+BY THIS WAY WE SOLVED THIS LAB.
