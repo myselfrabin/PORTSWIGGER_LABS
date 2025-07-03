@@ -1,0 +1,5 @@
+LAB INFO: LAB IS PROTECTED BY FRAME BUSING IT CAN'T LET ANY OTHER WEBSITE TO FRAME IT
+
+
+NOTE:The small things we did here is: to bypass the framebusting we use 
+  **** sandbox="allow-forms" in the <iframe> property and then we successfully solved the lab
