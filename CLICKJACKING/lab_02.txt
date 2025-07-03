@@ -1,0 +1,17 @@
+LAB INFO: Clickjacking with form input data prefilled from a URL parameter
+
+
+MORE INFO: This lab extends the basic clickjacking example in Lab: Basic clickjacking with CSRF token protection. The goal of the lab is to change the email address of the user by prepopulating a form using a URL parameter and enticing the user to inadvertently click on an "Update email" button.
+
+To solve the lab, craft some HTML that frames the account page and fools the user into updating their email address by clicking on a "Click me" decoy. The lab is solved when the email address is changed.
+
+You can log in to your own account using the following credentials: wiener:peter
+
+
+STEPS TO SOLVE: 
+1. Login with the credentials to own account
+2. There we saw an change email fn  and then we change the email 
+3. When we login it will go through the ?id=wiener an I wonder do it will go through same like: ?email=myemail@.com
+4. And yes it exactly goes thorugh like that, and we are able to input the email from that and change
+5. To do so we have to prepare a script and put the CLICK ME button in place of CHANGE-email
+6. And thorugh this steps we are able to clickjacking the user.
