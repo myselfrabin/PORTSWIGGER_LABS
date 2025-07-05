@@ -1,0 +1,21 @@
+LAB INFO: Exploiting clickjacking vulnerability to trigger DOM-based XSS
+
+
+
+
+STEPS TO SOLVE:
+1. We got a /feedback page and there we saw things like name,email comment things
+2. When we add all those only name field is being reflected.
+3. So it's definitely worth checking for the xss.
+4. we do give name field with: <u>rabin  --> and it does shows me name with underlined text.
+5. And then I checked for <script>alert('rabin)</script>  --> it doesnot gives popup 
+6. And noticing it's dom based xss we try: <img src=1 onerror=javascript:alert(1)> ==> and yes it does gives me alert popup
+7. So it's definitely dom based xss.
+8. And we have to call the print fn so I used: <img src=1 onerror=print()> ---> it does shows me the print page
+9. Now we have to clickjacking this page with the print fn but how????
+ 9.1 We need to have that payload in the name field so we can clickjacking it.
+ 9.2 So check if the url accept those data in the GET format
+     9.2.1 add ?name=rabin and see how it reacts --> yes it does shows now we are ready for frame it and giving it to the victim.
+
+
+    AND BY THIS WAY WE DO SOLVE THE LAB.
