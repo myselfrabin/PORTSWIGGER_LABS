@@ -1,0 +1,16 @@
+LAB INFO: Multistep clickjacking
+
+There is a Multistep clickjacking i.e 
+1. Delete the account
+2. Are you sure
+
+
+
+STEPS TO SOLVE:
+1. Open the lab login with the credentials <winer:peter>
+2. Go to the account page
+3 there u will see the Multistep process to delete the account 
+4. Click on delete account
+5. Click on are you sure
+6. You will see the account deleted
+7. NOw to solve it with clickjacking, iframe it make a script ready to click on delete account and are you sure
