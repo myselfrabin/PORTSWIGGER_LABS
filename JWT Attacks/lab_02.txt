@@ -1,0 +1,13 @@
+LAB INFO: JWT authentication bypass via flawed signature verification
+
+MORE INFO:  This lab uses a JWT-based mechanism for handling sessions. The server is insecurely configured to accept unsigned JWTs.
+
+To solve the lab, modify your session token to gain access to the admin panel at /admin, then delete the user carlos.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+GIVEN CREDS: <winer>:<peter>
+
+STEPS TO SOLVE: 
+1. Check if the jwt signature is verified --> yeah it's verified
+2. Chekc if the application accepts the unsigned jwt / none algorithm
