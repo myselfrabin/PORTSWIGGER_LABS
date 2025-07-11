@@ -1,0 +1,34 @@
+LAB INFO: JWT authentication bypass via weak signing key
+
+MORE INFO:  This lab uses a JWT-based mechanism for handling sessions. It uses an extremely weak secret key to both sign and verify tokens. This can be easily brute-forced using a wordlist of common secrets.
+
+To solve the lab, first brute-force the website's secret key. Once you've obtained this, use it to sign a modified session token that gives you access to the admin panel at /admin, then delete the user carlos.
+
+You can log in to your own account using the following credentials: wiener:peter
+
+
+CREDS: <wiener>:<peter>
+
+
+ANALYSIS: 
+1. Check if the JWT signature is verified.
+2. Check it the application accepts and unsigned JWT / none algorithm
+3. Check for weak signin key or bruteforcable secret key --> this only work for symmetric algorithm --> this does work here
+
+
+Now we wil be bruteforcing hai ... we will gonna take the JWT token and doing the offline attack.
+eyJraWQiOiIwMDQzYzQ0Mi1hNzcwLTQxN2UtYTQ1Zi0zZTYxNTljYTUyNjYiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwb3J0c3dpZ2dlciIsImV4cCI6MTc1MjIxMzkyMCwic3ViIjoid2llbmVyIn0.AI48b_mM18MijV6_tONXQ-D2TDk4Z5MkMZ5JFOFi9vk
+
+THe command used here is: 
+hashcat -a --> -a for attack mode 
+hascat -a 0 --> 0 attack mode it will take an wordlista and read the line by line 
+hashcat-a 0 -m --> stand for mode 
+hashcat -a 0 -m 16500 <jwt.txt> <wordlist_path> --> 16500 is the mode for JWT token
+
+*** Now we found out the the secret is secret1 now the next step here is to use that secret key in order to sign our modified 
+    token.
+
+Now we will be using our JWT Editor extension and keep the base64 version of secret1 in the field of secret key and signin that token.
+And now if we try to access the /admin page then we will be able to put it.
+
+HENCE SUCCESSFULLY WE SOLVED THE LAB HERE.
