@@ -1,0 +1,35 @@
+LAB INFO: JWT authentication bypass via jwk header injection
+
+MORE INFO:  This lab uses a JWT-based mechanism for handling sessions. The server supports the jwk parameter in the JWT header. This is sometimes used to embed the correct verification key directly in the token. However, it fails to check whether the provided key came from a trusted source.
+
+To solve the lab, modify and sign a JWT that gives you access to the admin panel at /admin, then delete the user carlos.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+VULNERABLE POINT: 
+1. JWK  parameter IT'S VULNERABLE check IT
+
+OUR GOAL: 
+1. Our goal is to add the jwk parameter to the JWT header and use it to modify the token (sign) the token and access the administrator panel.
+
+TESTING FOR JWT VULNERABILITY: 
+1. Check if the jwt signature is verified.
+2. Check if the application accepts the unsigned JWT / none algorithm.
+3. Check for the weak signin key or bruteforcable key (if symmetric algorithm)
+4. Check if application aceepts an arbitary accepted jwk header {i.e jwk injection} --> this works only for asymmettric cryptographic
+
+SO HOW THIS ATTACK WORKS IS??
+We give the our own jwk public key and if the application is misconfiguration than the application will use that public key to verify the signature.
+
+THINGS TO DO TO SOLVE THIS LAB.
+1. Generate an public key first.
+2. Click to the GENERATE RSA key and from there you can generate the new public key.
+3. And then in the Json Web Token we can click on the attack and then embed JWK and then we can send this request on the /admin panel
+4. Obviously in the payload field the sub:"administrator" should be there.
+
+
+
+
+NOTE: The only reason this attack is possible is the application is accepting the any kind of jwk header without actually verifying it.
+
+FINALLY WE SOLVED THE LAB.
