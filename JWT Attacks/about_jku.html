@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>What does the jku do in a JWT?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #444;
+        }
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        blockquote {
+            background: #fff;
+            border-left: 4px solid #007acc;
+            margin: 1em 0;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>What does the <code>jku</code> do in a JSON Web Token (JWT)?</h1>
+
+    <h2>1️⃣ Layman’s Explanation</h2>
+    <p>
+        Imagine you get a signed letter — it says it’s from your bank. You want to make sure it’s <strong>really</strong> from your bank, not from a scammer. So you check the <strong>signature</strong> — but how do you know what your bank’s signature looks like?
+    </p>
+    <p>
+        The <code>jku</code> in a JWT is like a <em>note in the letter</em> that says:
+    </p>
+    <blockquote>
+        “Hey! If you want to verify my signature, go to this website — there you’ll find my real signature to check with.”
+    </blockquote>
+    <p>
+        So:
+        <ul>
+            <li>The JWT is the letter.</li>
+            <li>The <code>jku</code> is a URL inside the JWT that tells you <strong>where</strong> to fetch the <strong>public key</strong> that was used to sign the JWT.</li>
+            <li>If you trust the URL, you trust the key, so you can verify the signature.</li>
+        </ul>
+    </p>
+    <p><strong>In simple words:</strong> ✅ <code>jku</code> = “Here’s where to get the key to check if I’m real.”</p>
+
+    <h2>2️⃣ Student-level (Cybersecurity / Developer)</h2>
+    <p>
+        In <strong>JWT (JSON Web Token)</strong>, the <code>jku</code> (JSON Key URL) is a <strong>header parameter</strong> that tells the recipient <strong>where to find the JSON Web Key Set (JWKS)</strong> that contains the <strong>public key(s)</strong> to verify the token’s signature.
+    </p>
+
+    <h3>How it works:</h3>
+    <ul>
+        <li>JWTs are signed with a <strong>private key</strong>.</li>
+        <li>To verify it, you need the <strong>matching public key</strong>.</li>
+        <li>Instead of hard-coding keys, the JWT can include <code>jku: "https://example.com/keys.json"</code>.</li>
+        <li>The server verifying the JWT fetches the JWKS from that URL.</li>
+        <li>The JWKS is a JSON file that lists one or more public keys.</li>
+        <li>The server picks the right key (often based on the <code>kid</code> header) and verifies the signature.</li>
+    </ul>
+
+    <h3>🔒 Security Risk:</h3>
+    <p>
+        If an attacker can tamper with <code>jku</code>, they could point it to their own server with their own key — making fake tokens appear valid. So:
+    </p>
+    <ul>
+        <li>You must only trust <code>jku</code> values from trusted issuers.</li>
+        <li>Many systems disable <code>jku</code> entirely or only allow it if the issuer is verified.</li>
+    </ul>
+
+    <h2>✅ Summary</h2>
+    <ul>
+        <li><strong>Layman:</strong> Tells you where to get the real signature to check.</li>
+        <li><strong>Student:</strong> A URL pointing to a trusted JWKS that holds the public key to validate the JWT signature.</li>
+    </ul>
+
+</body>
+</html>
