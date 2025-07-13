@@ -30,6 +30,8 @@ THINGS TO DO TO SOLVE THIS LAB.
 
 
 
-NOTE: The only reason this attack is possible is the application is accepting the any kind of jwk header without actually verifying it.
+NOTE: 
+1. The only reason this attack is possible is the application is accepting the any kind of jwk header without actually verifying it.
+2. This issue show on the burp like: JWT SELF SIGN HEADER SUPPORTED
 
 FINALLY WE SOLVED THE LAB.
