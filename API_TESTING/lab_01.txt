@@ -1,0 +1,13 @@
+LAB INFO: Exploiting an API endpoint using documentation
+
+TODO: Find the exposed API document and then delete the user carlos:
+
+GIVEN CREDS: <wiener>:<peter>
+
+ANALYSIS:
+1. Login to the given creds and send all the request to the burp
+2. By recon on the burp we will find the endpoint as: /api/user
+3. Whenever we are trying to access the /api/user it's giving the 401 unauthorized
+4. But if i try /api/ only then it's giving me a REST API from there i can view and delete the user
+5. And then doing: DELETE /api/user/carlos and using it's specific session it deletes the carlos
+6. FInally this way we solved the lab.
