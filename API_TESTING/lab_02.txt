@@ -1,0 +1,22 @@
+LAB INFO: Finding and exploiting an unused API endpoint
+
+TODO: Exploit the hidden API ENDPOINT to buy the Lightweight l33t Leather Jacket.
+
+GIVEN CREDS: <wiener>:<peter>
+
+ANALYSIS:
+1. Map the application
+2. Send the lather jacket into the cart 
+3. And there in burp HTTP HIstory you will get the api such as:
+   3.1 api/products/1/price --> currently it's accepting a GET request
+   3.2 Now view the which other request it will accept by using the: OPTIONS
+   3.3 You will see that it accepts the GET AND PATCH
+   3.4 Try with PATCH
+   3.5 You will get a error like it accepts Content-Type: application/json
+   3.6 Make Content-Type: application/json and then set the json for price like:
+   {
+    "price":0
+   }
+   3.7 And then it will make that product worth 0 value
+4. And then buy the product completely free
+5. Hence we solved the lab here.
