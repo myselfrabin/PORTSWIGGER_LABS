@@ -1,0 +1,15 @@
+LAB INFO: Exploiting a mass assignment vulnerability:
+
+MORE INFO: Buy the leather jacket by exploting this vulnerability
+
+
+GIVEN CREDS: <wiener>:<peter>
+
+ANALYSIS:
+1. Try to buy the jacket
+2. We will see the api endpoint as: /api/checkout 
+3. When we do get request here we can see the different thing in the json response
+4. Among that discount:0 is one
+4. Often changing the discount:100 from the POST request 
+5. And then finally we solved the lab.
+
