@@ -6,7 +6,7 @@ GIVEN CREDS: <wiener>:<peter>
 
 ANALYSIS:
 1. Login with the given creds
-2. There we can see the API KEY FOR THE CARLOS
+2. There we can see the API KEY FOR THE WIENER
 3. Send all request to the burp
 4. This is web cache deception so look at the response for the header like: 
    4.1 CACHE-CONTROL AND X-CACHE
