@@ -1,0 +1,26 @@
+LAB INFO:  Exploiting origin server normalization for web cache deception
+
+TO SOLVE: GET THE KEY FOR THE CARLOS
+
+GIVEN CREDS:  <wiener>:<peter>
+
+ANALYSIS:
+1. Login with the given username and password 
+  1.1 And then we can see their email and the API key
+2. Go to the burp history and see this request there, has it been cached or not?? --> view this
+3. By seeing the endpoint:  GET /my-account --> we don't see any caching behavior in the response --> but in the request wee see that: Cache-Control: max-age=0   --> [image]
+4. Trying different others delimeters and let's see what will happens --> 
+   4.1 /my-account/aaa --> gives me 404 --> the page don't exist
+   4.2 /my-account;aaa --> gives me 404 --> the page don't exist
+   4.3 /my-account?a=b.js --> ok it gives me 200 ok and shows me everything 
+5. Now I need to find some static page that cache on the server because this: /my-account?a=b.js is not caching anything
+6. by visiting the burp history we conclude that: the /resource/ static site is caching on the server  [image]
+7. Now let's play with it to view the api key for the carlos...
+  7.1 /resources?my-account --> gives 404
+  7.2 /resources/my-account --> 404 so may be some kind of path normalization is mapped here let's try
+  7.3 /resources/../my-account --> intresting this redirects me to the login page  [image]
+  7.4 let's decode some things from 7.3 and try again:
+    7.4.1 /resources/..%2fmy-account  --> ok this does gives cache with present of api key in the response [image]
+  7.5 now we will be making a new enpoint to be cached and then send it to the carlos and get their api key
+  7.6 /resources/..%2fmy-account?a=carlos.js --> this is the final payload
+  7.7 FINALLY WE SOLVED THE LAB --> CARLOS API KEY IS IN [image]
