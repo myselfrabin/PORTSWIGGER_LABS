@@ -1,0 +1,39 @@
+LAB INFO:  Exploiting exact-match cache rules for web cache deception
+
+GOAL: Change the email of the administrator by the help of csrf attack and web cache deception attack
+
+LEVEL: EXPERT
+
+SOME KNOWLEDGE:     
+1. Always do check for the static file they will be cached like: robots.txt, favicon.ico, index.html and more......
+
+GIVEN CREDS: <wiener>:<peter>
+
+ANALYSIS:
+1. Login with the given creds
+   1.1 We can only see the username i.e wiener and the change email field 
+   1.2 Let's change the email
+   1.2 And view this everything in the burp history
+   1.3 [image] {normal things}
+2. Now try to find the static path from the burp history first and then look for a file
+   2.1 Look if any one of the response contain the cache behaviour i.e X-CAHCE: miss or hit anything
+   2.2 Open the web dev tools and from the network tab look for the files and see those reponse we didnot found from the burp history
+   2.3 Ok we do get the favicon.ico and this response contain X-CACHE: miss ---> examine this in  the burp [image]{favicon.ico}
+3. Yes, GET /favicon.ico does contain the X-CACHE [image][favicon_burp] --> let's go examine further
+4. /favicon.ico/?my-account --> gives 200OK with favicon things not my-account let's move my-account agadi
+   4.1 /my-account/favicon.ico --> gives me redirection to login with not being cached
+   4.2 url encode / --> /my-account%2ffavicon.ico --> ok shows me 404 not found with nothing being cached
+   4.3 /my-account?favicon.ico --> this gives me dynamic response of /my-account but nothing being cached
+   4.4 Now let's try to bruteforce it what other delimeters are in use like ?
+      4.4.1 /my-account?favicon.ico --> done only ; and ? delimeter are ok here [image] {successful_bruteforce_delimeter}
+   4.5 /my-account;favicon.ico --> it does same as ? too gives me 200 but nothing being cached
+   4.6 Now let's try to have the path /my-account with path normalization i.e tricking the server
+      4.6.1 /my-account;/../favicon.ico --> ok it does gives me 404 error but with X-CACHE:miss --> red flag
+      4.6.2 try with url encoding: /my-account;%2f%..2ffavicon.ico --> ok it does give me 200 with nothing being cached
+      4.6.3 encode .. too: /my-account;%2f%2e%2e%2ffavicon.ico --> yes this does shows me 200OK my-account details with being cached [image]{successful_payload_being_cached}
+      4.6.2 if any error came the use new path i.e /my-account;%2f%2e%2e%2ffavicon.ico?a=b.js 
+5. Now give it to the exploit server
+   5.1 giving it and delivering to victim the administrator user came just for a second blink and then it disappers
+   5.2 we can view the burp history take the csrf token of administrator user and change it's email [image]{administrator}
+   5.3 now take the csrf token of admin generate csrf poc and change the email [image][csrf_change_email]
+6. submit this csrf poc in and deliver to victim and then the lab has been solved [image][solved]
