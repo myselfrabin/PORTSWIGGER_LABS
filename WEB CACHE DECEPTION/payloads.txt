@@ -1,0 +1,4 @@
+/my-account/1.jpg
+/resources/..%2fmy-account?a=carlos.js
+/my-account%23%2f%2e%2e%2fresources
+/my-account;%2f%2e%2e%2ffavicon.ico?a=b.js
