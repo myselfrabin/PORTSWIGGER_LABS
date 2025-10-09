@@ -1,4 +1,4 @@
-# Demo script for 'JWT Authentication Bypass via Weak Signing Key' video: https://youtu.be/ov9yT4WAuzI
+# Demo script for 'JWT Authentication Bypass via Weak Signing Key' 
 import jwt
 
 # Paste JWT token here
