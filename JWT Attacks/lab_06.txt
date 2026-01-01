@@ -1,0 +1,13 @@
+LAB INFO: JWT authentication bypass via kid header path traversal
+
+MORE INFO:  This lab uses a JWT-based mechanism for handling sessions. In order to verify the signature, the server uses the kid parameter in JWT header to fetch the relevant key from its filesystem.
+
+To solve the lab, forge a JWT that gives you access to the admin panel at /admin, then delete the user carlos.
+
+You can log in to your own account using the following credentials: wiener:peter 
+
+
+ANALYSIS:
+1. Check if the JWT signature is verified.
+2. Check if the application accepts an unsigned JWT / none algorithm.
+3. Check for weak signing key / brute-force secret key.

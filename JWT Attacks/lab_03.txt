@@ -11,7 +11,7 @@ CREDS: <wiener>:<peter>
 
 
 ANALYSIS: 
-1. Check if the JWT signature is verified.
+1. Check if the JWT signature is verified. {Just change the few character in signature}
 2. Check it the application accepts and unsigned JWT / none algorithm
 3. Check for weak signin key or bruteforcable secret key --> this only work for symmetric algorithm --> this does work here
 
@@ -32,3 +32,7 @@ Now we will be using our JWT Editor extension and keep the base64 version of sec
 And now if we try to access the /admin page then we will be able to put it.
 
 HENCE SUCCESSFULLY WE SOLVED THE LAB HERE.
+
+
+SO WHAT IS SYMMETRIC KEY?
+--> The symmetric key only uses one key to generate and validate the signature. 
