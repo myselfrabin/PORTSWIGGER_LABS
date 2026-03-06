@@ -99,3 +99,6 @@ This lab demonstrates a DOM-based XSS vulnerability that uses web messaging and 
 
 ## Conclusion
 By exploiting the insecure handling of `postMessage` and the lack of validation in the `load-channel` case, we successfully triggered the DOM-based XSS vulnerability. This highlights the importance of validating and sanitizing user inputs, especially when using web messaging and JSON parsing.
+
+## Note 
+Always take care on while escaping the json character this is crucial in this lab and always decode the code from the source code and do your own research.
