@@ -53,7 +53,7 @@ GET  /my-account?id=wiener  → logged in successfully
 Two things stood out:
 
 - The 2FA code is only **4 digits**  possible to brute-force if there's no rate limiting.
-- After `POST /login`, the server redirects to `/login2`  but what if we **skip `/login2` entirely** and navigate directly to `/my-account?id=carlos`?
+- After `POST /login`, the server redirects to `/login2`  but what if we **skip `/login2` entirely** and navigate directly to `/my-account?id=carlos`???
 
 ---
 
@@ -67,7 +67,7 @@ With Burp Proxy intercept on, forward the `POST /login` request but **drop the `
 
 ![Dropping the /login2 request](./droplogin2.png)
 
-Now navigate directly to `/my-account?id=carlos` in the browser:
+Now navigate directly to `/my-account` in the browser:
 
 ![Logged in as Carlos](./loggedinasCarlos.png)
 
