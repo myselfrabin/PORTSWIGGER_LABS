@@ -12,7 +12,7 @@
 - So, first let's bruteforce for the `username`, let's see it's response
 - Ok, I send the request into the `intruder` and now ready to bruteforce the username with common usernames we are provided for this lab.
 ![ready for bruteforce](./usernamebruteforce.png)
-- And, now while bruteforcing everyOther request is giving me a `response Length` of 3352 but one one request gave me response length of 3352, so I think like why this difference and see that request
+- And, now while bruteforcing everyOther request is giving me a `response Length` of 3352 but one one request gave me response length of 3354, so I think like why this difference and see that request
     - Often seeing that request I get the verbose error as:
     ```
     Incorrect password
